@@ -1,71 +1,48 @@
 import 'dart:io';
 
-Future<int> desertIslandNumbers() async {
-  final file = File('Dart/Day6/input.txt');
-  try {
-    final contents = await file.readAsString();
-    final game = parseRecords(contents);
-    final result = game.result();
-    print(result);
-    return result;
-  } catch (e) {
-    print(e);
-    return 0;
-  }
-}
+void desertIslandNumbers() {
+  String input = File('Dart/Day6/input.txt').readAsStringSync();
+  List<String> lines = input.split('\n');
 
-class Game {
-  final List<Race> records;
+  List<int> times = lines[0]
+      .split(RegExp(r'\s+'))
+      .skip(1)
+      .where((s) => s.isNotEmpty)
+      .map((s) => int.parse(s))
+      .toList();
 
-  Game({required this.records});
+  List<int> records = lines[1]
+      .split(RegExp(r'\s+'))
+      .skip(1)
+      .where((s) => s.isNotEmpty)
+      .map((s) => int.parse(s))
+      .toList();
 
-  int result() {
-    var wins = 1;
-    for (final record in records) {
-      wins *= record.findWinningTimes();
-    }
-    return wins;
-  }
-}
+  List<Tuple2<int, int>> races = List.generate(
+      times.length, (index) => Tuple2(times[index], records[index]));
 
-Game parseRecords(String input) {
-  final lines = input.trim().split('\n');
-  final times = lines[0].split(' ').skip(1).map(int.parse).toList();
-  final distances = lines[1].split(' ').skip(1).map(int.parse).toList();
+  int totalWays = 1;
 
-  final records = <Race>[];
-  for (var i = 0; i < times.length; i++) {
-    records.add(
-      Race(
-        times[i],
-        distances[i],
-      ),
-    );
-  }
+  for (Tuple2<int, int> race in races) {
+    int waysToWin = 0;
 
-  return Game(records: records);
-}
+    for (int holdTime = 0; holdTime < race.item1; holdTime++) {
+      int distance = (race.item1 - holdTime) * holdTime;
 
-class Race {
-  late int time;
-  late int distance;
-  Race(int time, int distance) {
-    this.time = time;
-    this.distance = distance;
-  }
-
-  int findWinningTimes() {
-    var wins = 0;
-    for (var holdTime = 1; holdTime < time; holdTime++) {
-      final distance = travelDistance(holdTime);
-      if (distance > this.distance) {
-        wins += 1;
-      } else if (wins > 0) {
-        break;
+      if (distance > race.item2) {
+        waysToWin += 1;
       }
     }
-    return wins;
+
+    totalWays *= waysToWin;
   }
 
-  int travelDistance(int holdTime) => holdTime * (time - holdTime);
+  print('$totalWays');
+}
+
+class Tuple2<T1, T2> {
+  final T1 item1;
+  final T2 item2;
+
+  Tuple2(this.item1, this.item2);
 }
