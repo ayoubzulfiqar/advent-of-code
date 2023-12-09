@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-void main() {
+void desertIslandLongerRace() {
   var lines = File('Dart/Day6/input.txt').readAsLinesSync();
   List<int> time = [
     int.parse(lines[0].split(":")[1].trim().replaceAll(" ", ""))

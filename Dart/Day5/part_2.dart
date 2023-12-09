@@ -113,7 +113,3 @@ int lowestInitialSeedNumber() {
     return 0;
   }
 }
-
-void main() {
-  lowestInitialSeedNumber();
-}

@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:convert';
 
-void main() {
+void jokerCardGame() {
   List<String> readLines() {
     List<String> result = [];
 

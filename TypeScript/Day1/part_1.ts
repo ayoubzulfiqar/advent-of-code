@@ -2,7 +2,7 @@ import * as fs from 'fs';
 
 async function sumCalibration(): Promise<number> {
   try {
-    const fileContent: string = await fs.promises.readFile('test.txt', 'utf-8');
+    const fileContent: string = await fs.promises.readFile('./input.txt', 'utf-8');
     const lines: string[] = fileContent.split('\n');
 
     let sum: number = 0;

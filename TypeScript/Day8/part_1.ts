@@ -1,68 +1,44 @@
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
 
-interface Node {
-  Left: string;
-  Right: string;
+
+function stepsToReachZ(): number {
+  const input = fs.readFileSync("./input.txt", 'utf-8');
+  const { moves, adj } = parse(input);
+  let curr = "AAA";
+  const target = "ZZZ";
+  const n = moves.length;
+  let i = 0;
+  let res = 0;
+
+  while (curr !== target) {
+      if (moves[i % n] === 'L') {
+          curr = adj[curr][0];
+      } else {
+          curr = adj[curr][1];
+      }
+      i += 1;
+      res += 1;
+  }
+ console.log(res)
+  return res;
 }
 
-async function process(contents: string): Promise<number> {
-  const nodesMap: { [key: string]: Node } = {};
-  const lines = contents.split('\n');
-  const turns = lines[0];
+function parse(input: string): { moves: string; adj: { [key: string]: string[] } } {
+  const blocks = input.replace(/\r\n/g, '\n').split('\n\n');
+  const adj: { [key: string]: string[] } = {};
+  const moves = blocks[0];
 
-  const nodeRe = /^([A-Z][A-Z][A-Z]) = \(([A-Z][A-Z][A-Z]), ([A-Z][A-Z][A-Z])\)$/;
+  for (const line of blocks[1].split('\n')) {
+      const contents = line.split(' = ');
+      const source = contents[0];
+      const dest = contents[1].split(', ');
+      const left = dest[0].slice(1);
+      const right = dest[1].slice(0, -1);
 
-  for (let i = 2; i < lines.length; i++) {
-    const line = lines[i];
-    const nodeCaps = line.match(nodeRe);
-    if (nodeCaps) {
-      const source = nodeCaps[1];
-      const lDest = nodeCaps[2];
-      const rDest = nodeCaps[3];
-      nodesMap[source] = { Left: lDest, Right: rDest };
-    }
+      adj[source] = [left, right];
   }
 
-  let currentNode = "AAA";
-  let steps = 0;
-  let turnIdx = 0;
-
-  while (currentNode !== "ZZZ") {
-    const turn = turns[turnIdx];
-
-    switch (turn) {
-      case 'L':
-        currentNode = nodesMap[currentNode].Left;
-        break;
-      case 'R':
-        currentNode = nodesMap[currentNode].Right;
-        break;
-      default:
-        throw new Error("unexpected char in turns");
-    }
-
-    steps++;
-    turnIdx = (turnIdx + 1) % turns.length;
-  }
-
-  return steps;
+  return { moves, adj };
 }
 
-async function stepsToReachZ() {
-  const filename = "input.txt";
-
-  try {
-    const contents = await fs.readFile(filename, 'utf-8');
-    const result = await process(contents);
-    console.log(`result = ${result}`);
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error(`Error opening or reading file: ${err.message}`);
-    } else {
-      console.error(`Unknown error: ${err}`);
-    }
-    // process.exit(1);
-  }
-}
-
-stepsToReachZ();
+stepsToReachZ()

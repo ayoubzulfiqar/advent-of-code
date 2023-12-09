@@ -16,7 +16,7 @@ const wordToDigit: { [key: string]: number } = {
 function sumCalibrationValues(): number {
   try {
     // Open the file named "input.txt" for reading.
-    const fileContent = fs.readFileSync('input.txt', 'utf8');
+    const fileContent = fs.readFileSync('./input.txt', 'utf8');
     const lines = fileContent.split('\n');
 
     // Variables to store the total sum of digit values.
