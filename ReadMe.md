@@ -2,6 +2,8 @@
 
 Implemented in Go, TypeScript & Dart
 
+## [Questions](2023/Questions.md)
+
 |**Go**|**Dart**|**TypeScript**|
 |------|--------|--------------|
 |[Day-1](Go/Day1)|[Day-1](Dart/Day1)|[Day-1](TypeScript/Day1)|
