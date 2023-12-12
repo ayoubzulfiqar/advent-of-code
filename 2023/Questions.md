@@ -719,3 +719,493 @@ Doing this for the remaining example data above results in previous values of -3
 **2.  Analyze your OASIS report again, this time extrapolating the previous value for each history. What is the sum of these extrapolated values?**
 
 Your puzzle answer was 919.
+
+## Question: 10 Day 10
+
+--- Day 10: Pipe Maze ---
+You use the hang glider to ride the hot air from Desert Island all the way up to the floating metal island. This island is surprisingly cold and there definitely aren't any thermals to glide on, so you leave your hang glider behind.
+
+You wander around for a while, but you don't find any people or animals. However, you do occasionally find signposts labeled "Hot Springs" pointing in a seemingly consistent direction; maybe you can find someone at the hot springs and ask them where the desert-machine parts are made.
+
+The landscape here is alien; even the flowers and trees are made of metal. As you stop to admire some metal grass, you notice something metallic scurry away in your peripheral vision and jump into a big pipe! It didn't look like any animal you've ever seen; if you want a better look, you'll need to get ahead of it.
+
+Scanning the area, you discover that the entire field you're standing on is densely packed with pipes; it was hard to tell at first because they're the same metallic silver color as the "ground". You make a quick sketch of all of the surface pipes you can see (your puzzle input).
+
+The pipes are arranged in a two-dimensional grid of tiles:
+
+| is a vertical pipe connecting north and south.
+
+```txt
+- is a horizontal pipe connecting east and west.
+L is a 90-degree bend connecting north and east.
+J is a 90-degree bend connecting north and west.
+7 is a 90-degree bend connecting south and west.
+F is a 90-degree bend connecting south and east.
+. is ground; there is no pipe in this tile.
+```
+
+S is the starting position of the animal; there is a pipe on this tile, but your sketch doesn't show what shape the pipe has.
+Based on the acoustics of the animal's scurrying, you're confident the pipe that contains the animal is one large, continuous loop.
+
+For example, here is a square loop of pipe:
+
+```txt
+.....
+.F-7.
+.|.|.
+.L-J.
+.....
+```
+
+If the animal had entered this loop in the northwest corner, the sketch would instead look like this:
+
+```txt
+.....
+.S-7.
+.|.|.
+.L-J.
+.....
+
+```
+
+In the above diagram, the S tile is still a 90-degree F bend: you can tell because of how the adjacent pipes connect to it.
+
+Unfortunately, there are also many pipes that aren't connected to the loop! This sketch shows the same loop as above:
+
+```txt
+-L|F7
+7S-7|
+L|7||
+-L-J|
+L|-JF
+```
+
+In the above diagram, you can still figure out which pipes form the main loop: they're the ones connected to S, pipes those pipes connect to, pipes those pipes connect to, and so on. Every pipe in the main loop connects to its two neighbors (including S, which will have exactly two pipes connecting to it, and which is assumed to connect back to those two pipes).
+
+Here is a sketch that contains a slightly more complex main loop:
+
+```txt
+..F7.
+.FJ|.
+SJ.L7
+|F--J
+LJ...
+
+```
+
+Here's the same example sketch with the extra, non-main-loop pipe tiles also shown:
+
+```txt
+7-F7-
+.FJ|7
+SJLL7
+|F--J
+LJ.LJ
+```
+
+If you want to get out ahead of the animal, you should find the tile in the loop that is farthest from the starting position. Because the animal is in the pipe, it doesn't make sense to measure this by direct distance. Instead, you need to find the tile that would take the longest number of steps along the loop to reach from the starting point - regardless of which way around the loop the animal went.
+
+In the first example with the square loop:
+
+```txt
+.....
+.S-7.
+.|.|.
+.L-J.
+.....
+```
+
+You can count the distance each tile in the loop is from the starting point like this:
+
+```txt
+.....
+.012.
+.1.3.
+.234.
+.....
+```
+
+In this example, the farthest point from the start is 4 steps away.
+
+Here's the more complex loop again:
+
+```txt
+..F7.
+.FJ|.
+SJ.L7
+|F--J
+LJ...
+```
+
+Here are the distances for each tile on that loop:
+
+```txt
+..45.
+.236.
+01.78
+14567
+23...
+```
+
+**Find the single giant loop starting at S. How many steps along the loop does it take to get from the starting position to the point farthest from the starting position?**
+
+Your puzzle answer was 7145.
+
+--- Part Two ---
+You quickly reach the farthest point of the loop, but the animal never emerges. Maybe its nest is within the area enclosed by the loop?
+
+To determine whether it's even worth taking the time to search for such a nest, you should calculate how many tiles are contained within the loop. For example:
+
+```txt
+...........
+.S-------7.
+.|F-----7|.
+.||.....||.
+.||.....||.
+.|L-7.F-J|.
+.|..|.|..|.
+.L--J.L--J.
+...........
+```
+
+The above loop encloses merely four tiles - the two pairs of . in the southwest and southeast (marked I below). The middle . tiles (marked O below) are not in the loop. Here is the same loop again with those regions marked:
+
+```txt
+...........
+.S-------7.
+.|F-----7|.
+.||OOOOO||.
+.||OOOOO||.
+.|L-7OF-J|.
+.|II|O|II|.
+.L--JOL--J.
+.....O.....
+```
+
+In fact, there doesn't even need to be a full tile path to the outside for tiles to count as outside the loop - squeezing between pipes is also allowed! Here, I is still within the loop and O is still outside the loop:
+
+```txt
+..........
+.S------7.
+.|F----7|.
+.||OOOO||.
+.||OOOO||.
+.|L-7F-J|.
+.|II||II|.
+.L--JL--J.
+..........
+```
+
+In both of the above examples, 4 tiles are enclosed by the loop.
+
+Here's a larger example:
+
+```txt
+.F----7F7F7F7F-7....
+.|F--7||||||||FJ....
+.||.FJ||||||||L7....
+FJL7L7LJLJ||LJ.L-7..
+L--J.L7...LJS7F-7L7.
+....F-J..F7FJ|L7L7L7
+....L7.F7||L7|.L7L7|
+.....|FJLJ|FJ|F7|.LJ
+....FJL-7.||.||||...
+....L---J.LJ.LJLJ...
+```
+
+The above sketch has many random bits of ground, some of which are in the loop (I) and some of which are outside it (O):
+
+```txt
+OF----7F7F7F7F-7OOOO
+O|F--7||||||||FJOOOO
+O||OFJ||||||||L7OOOO
+FJL7L7LJLJ||LJIL-7OO
+L--JOL7IIILJS7F-7L7O
+OOOOF-JIIF7FJ|L7L7L7
+OOOOL7IF7||L7|IL7L7|
+OOOOO|FJLJ|FJ|F7|OLJ
+OOOOFJL-7O||O||||OOO
+OOOOL---JOLJOLJLJOOO
+```
+
+In this larger example, 8 tiles are enclosed by the loop.
+
+Any tile that isn't part of the main loop can count as being enclosed by the loop. Here's another example with many bits of junk pipe lying around that aren't connected to the main loop at all:
+
+```txt
+FF7FSF7F7F7F7F7F---7
+L|LJ||||||||||||F--J
+FL-7LJLJ||||||LJL-77
+F--JF--7||LJLJ7F7FJ-
+L---JF-JLJ.||-FJLJJ7
+|F|F-JF---7F7-L7L|7|
+|FFJF7L7F-JF7|JL---7
+7-L-JL7||F7|L7F-7F7|
+L.L7LFJ|||||FJL7||LJ
+L7JLJL-JLJLJL--JLJ.L
+```
+
+Here are just the tiles that are enclosed by the loop marked with I:
+
+```txt
+FF7FSF7F7F7F7F7F---7
+L|LJ||||||||||||F--J
+FL-7LJLJ||||||LJL-77
+F--JF--7||LJLJIF7FJ-
+L---JF-JLJIIIIFJLJJ7
+|F|F-JF---7IIIL7L|7|
+|FFJF7L7F-JF7IIL---7
+7-L-JL7||F7|L7F-7F7|
+L.L7LFJ|||||FJL7||LJ
+L7JLJL-JLJLJL--JLJ.L
+```
+
+In this last example, 10 tiles are enclosed by the loop.
+
+**Figure out whether you have time to search for the nest by calculating the area within the loop. How many tiles are enclosed by the loop?**
+
+Your puzzle answer was 445.
+
+## Question: 11 Day 11
+
+--- Day 11: Cosmic Expansion ---
+You continue following signs for "Hot Springs" and eventually come across an observatory. The Elf within turns out to be a researcher studying cosmic expansion using the giant telescope here.
+
+He doesn't know anything about the missing machine parts; he's only visiting for this research project. However, he confirms that the hot springs are the next-closest area likely to have people; he'll even take you straight there once he's done with today's observation analysis.
+
+Maybe you can help him with the analysis to speed things up?
+
+The researcher has collected a bunch of data and compiled the data into a single giant image (your puzzle input). The image includes empty space (.) and galaxies (#). For example:
+
+```txt
+...#......
+.......#..
+
+#
+
+..........
+......#...
+.#........
+.........#
+..........
+.......#..
+
+#   #
+```
+
+The researcher is trying to figure out the sum of the lengths of the shortest path between every pair of galaxies. However, there's a catch: the universe expanded in the time it took the light from those galaxies to reach the observatory.
+
+Due to something involving gravitational effects, only some space expands. In fact, the result is that any rows or columns that contain no galaxies should all actually be twice as big.
+
+In the above example, three columns and two rows contain no galaxies:
+
+```txt
+   v  v  v
+ ...#......
+ .......#..
+ #.........
+>..........<
+ ......#...
+ .#........
+ .........#
+>..........<
+ .......#..
+ #...#.....
+   ^  ^  ^
+```
+
+These rows and columns need to be twice as big; the result of cosmic expansion therefore looks like this:
+
+```txt
+....#........
+.........#...
+
+#
+
+.............
+.............
+........#....
+.#...........
+............#
+.............
+.............
+.........#...
+
+# .... #
+```
+
+Equipped with this expanded universe, the shortest path between every pair of galaxies can be found. It can help to assign every galaxy a unique number:
+
+```txt
+....1........
+.........2...
+3............
+.............
+.............
+........4....
+.5...........
+............6
+.............
+.............
+.........7...
+8....9.......
+```
+
+In these 9 galaxies, there are 36 pairs. Only count each pair once; order within the pair doesn't matter. For each pair, find any shortest path between the two galaxies using only steps that move up, down, left, or right exactly one . or # at a time. (The shortest path between two galaxies is allowed to pass through another galaxy.)
+
+For example, here is one of the shortest paths between galaxies 5 and 9:
+
+```txt
+....1........
+.........2...
+3............
+.............
+.............
+........4....
+.5...........
+.##.........6
+..##.........
+...##........
+....##...7...
+8....9.......
+```
+
+This path has length 9 because it takes a minimum of nine steps to get from galaxy 5 to galaxy 9 (the eight locations marked # plus the step onto galaxy 9 itself). Here are some other example shortest path lengths:
+
+Between galaxy 1 and galaxy 7: 15
+Between galaxy 3 and galaxy 6: 17
+Between galaxy 8 and galaxy 9: 5
+In this example, after expanding the universe, the sum of the shortest path between all 36 pairs of galaxies is 374.
+
+**Expand the universe, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?**
+
+Your puzzle answer was 9974721.
+
+--- Part Two ---
+The galaxies are much older (and thus much farther apart) than the researcher initially estimated.
+
+Now, instead of the expansion you did before, make each empty row or column one million times larger. That is, each empty row should be replaced with 1000000 empty rows, and each empty column should be replaced with 1000000 empty columns.
+
+(In the example above, if each empty row or column were merely 10 times larger, the sum of the shortest paths between every pair of galaxies would be 1030. If each empty row or column were merely 100 times larger, the sum of the shortest paths between every pair of galaxies would be 8410. However, your universe will need to expand far beyond these values.)
+
+**Starting with the same initial image, expand the universe according to these new rules, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?**
+
+Your puzzle answer was 702770569197.
+
+## Question: 12 Day 12
+
+--- Day 12: Hot Springs ---
+You finally reach the hot springs! You can see steam rising from secluded areas attached to the primary, ornate building.
+
+As you turn to enter, the researcher stops you. "Wait - I thought you were looking for the hot springs, weren't you?" You indicate that this definitely looks like hot springs to you.
+
+"Oh, sorry, common mistake! This is actually the onsen! The hot springs are next door."
+
+You look in the direction the researcher is pointing and suddenly notice the massive metal helixes towering overhead. "This way!"
+
+It only takes you a few more steps to reach the main gate of the massive fenced-off area containing the springs. You go through the gate and into a small administrative building.
+
+"Hello! What brings you to the hot springs today? Sorry they're not very hot right now; we're having a lava shortage at the moment." You ask about the missing machine parts for Desert Island.
+
+"Oh, all of Gear Island is currently offline! Nothing is being manufactured at the moment, not until we get more lava to heat our forges. And our springs. The springs aren't very springy unless they're hot!"
+
+"Say, could you go up and see why the lava stopped flowing? The springs are too cold for normal operation, but we should be able to find one springy enough to launch you up there!"
+
+There's just one problem - many of the springs have fallen into disrepair, so they're not actually sure which springs would even be safe to use! Worse yet, their condition records of which springs are damaged (your puzzle input) are also damaged! You'll need to help them repair the damaged records.
+
+In the giant field just outside, the springs are arranged into rows. For each row, the condition records show every spring and whether it is operational (.) or damaged (#). This is the part of the condition records that is itself damaged; for some springs, it is simply unknown (?) whether the spring is operational or damaged.
+
+However, the engineer that produced the condition records also duplicated some of this information in a different format! After the list of springs for a given row, the size of each contiguous group of damaged springs is listed in the order those groups appear in the row. This list always accounts for every damaged spring, and each number is the entire size of its contiguous group (that is, groups are always separated by at least one operational spring: #### would always be 4, never 2,2).
+
+So, condition records with no unknown spring conditions might look like this:
+
+```txt
+#.#.### 1,1,3
+.#...#....###. 1,1,3
+.#.###.#.###### 1,3,1,6
+####.#...#... 4,1,1
+#....######..#####. 1,6,5
+.###.##....# 3,2,1
+
+```
+
+However, the condition records are partially damaged; some of the springs' conditions are actually unknown (?). For example:
+
+```txt
+???.### 1,1,3
+.??..??...?##. 1,1,3
+?#?#?#?#?#?#?#? 1,3,1,6
+????.#...#... 4,1,1
+????.######..#####. 1,6,5
+?###???????? 3,2,1
+```
+
+Equipped with this information, it is your job to figure out how many different arrangements of operational and broken springs fit the given criteria in each row.
+
+In the first line (???.### 1,1,3), there is exactly one way separate groups of one, one, and three broken springs (in that order) can appear in that row: the first three unknown springs must be broken, then operational, then broken (#.#), making the whole row #.#.###.
+
+The second line is more interesting: .??..??...?##. 1,1,3 could be a total of four different arrangements. The last ? must always be broken (to satisfy the final contiguous group of three broken springs), and each ?? must hide exactly one of the two broken springs. (Neither ?? could be both broken springs or they would form a single contiguous group of two; if that were true, the numbers afterward would have been 2,3 instead.) Since each ?? can either be #. or .#, there are four possible arrangements of springs.
+
+The last line is actually consistent with ten different arrangements! Because the first number is 3, the first and second ? must both be . (if either were #, the first number would have to be 4 or higher). However, the remaining run of unknown spring conditions have many different ways they could hold groups of two and one broken springs:
+
+```txt
+?###???????? 3,2,1
+.###.##.#...
+.###.##..#..
+.###.##...#.
+.###.##....#
+.###..##.#..
+.###..##..#.
+.###..##...#
+.###...##.#.
+.###...##..#
+.###....##.#
+```
+
+In this example, the number of possible arrangements for each row is:
+
+```txt
+???.### 1,1,3 - 1 arrangement
+.??..??...?##. 1,1,3 - 4 arrangements
+?#?#?#?#?#?#?#? 1,3,1,6 - 1 arrangement
+????.#...#... 4,1,1 - 1 arrangement
+????.######..#####. 1,6,5 - 4 arrangements
+?###???????? 3,2,1 - 10 arrangements
+```
+
+Adding all of the possible arrangement counts together produces a total of 21 arrangements.
+
+**For each row, count all of the different arrangements of operational and broken springs that meet the given criteria. What is the sum of those counts?**
+
+Your puzzle answer was 7286.
+
+--- Part Two ---
+As you look out at the field of springs, you feel like there are way more springs than the condition records list. When you examine the records, you discover that they were actually folded up this whole time!
+
+To unfold the records, on each row, replace the list of spring conditions with five copies of itself (separated by ?) and replace the list of contiguous groups of damaged springs with five copies of itself (separated by ,).
+
+So, this row:
+
+```txt
+.# 1
+Would become:
+
+.#?.#?.#?.#?.# 1,1,1,1,1
+The first line of the above example would become:
+
+???.###????.###????.###????.###????.### 1,1,3,1,1,3,1,1,3,1,1,3,1,1,3
+In the above example, after unfolding, the number of possible arrangements for some rows is now much larger:
+
+???.### 1,1,3 - 1 arrangement
+.??..??...?##. 1,1,3 - 16384 arrangements
+?#?#?#?#?#?#?#? 1,3,1,6 - 1 arrangement
+????.#...#... 4,1,1 - 16 arrangements
+????.######..#####. 1,6,5 - 2500 arrangements
+?###???????? 3,2,1 - 506250 arrangements
+```
+
+After unfolding, adding all of the possible arrangement counts together produces 525152.
+
+**Unfold your condition records; what is the new sum of possible arrangement counts?**
+
+Your puzzle answer was 25470469710341.
