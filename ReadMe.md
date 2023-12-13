@@ -18,5 +18,6 @@ Implemented in Go, TypeScript & Dart
 |[Day-10](Go/Day10)|[Day-10](Dart/Day10)|[Day-10](TypeScript/Day10)|
 |[Day-11](Go/Day11)|[Day-11](Dart/Day11)|[Day-11](TypeScript/Day11)|
 |[Day-12](Go/Day12)|[Day-12](Dart/Day12)|[Day-12](TypeScript/Day12)|
+|[Day-13](Go/Day13)|[Day-13](Dart/Day13)|[Day-13](TypeScript/Day13)|
 
 First Implement then Make it ---*FAST*----
