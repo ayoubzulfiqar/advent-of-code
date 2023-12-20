@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -15,7 +15,7 @@ var move = map[string]struct{ dx, dy int }{
 }
 
 func CubicMetersOfLava() {
-	content, err := ioutil.ReadFile("input.txt")
+	content, err := os.ReadFile("input.txt")
 	if err != nil {
 		panic(err)
 	}
