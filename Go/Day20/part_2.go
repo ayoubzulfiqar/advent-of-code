@@ -7,151 +7,133 @@ import (
 	"strings"
 )
 
-type Module struct {
-	Name    string
-	Type    string
-	Outputs []string
-	Memory  interface{}
-}
-
-func NewModule(name, typeStr string, outputs []string) *Module {
-	var memory interface{}
-	if typeStr == "%" {
-		memory = "off"
-	} else {
-		memory = make(map[string]string)
-	}
-	return &Module{Name: name, Type: typeStr, Outputs: outputs, Memory: memory}
-}
-
 func Run() {
-	modules := make(map[string]*Module)
-	var broadcastTargets []string
+	m := make(map[string]struct {
+		t string
+		d []string
+	})
+	f := make(map[string]string)
+	c := make(map[string]map[string]string)
+	l := make(map[string]int) // Initialize map l
 	file, _ := os.Open("input.txt")
 	scanner := bufio.NewScanner(file)
+	var r string
+
 	for scanner.Scan() {
 		line := scanner.Text()
-		leftRight := strings.Split(line, " -> ")
-		left, right := leftRight[0], leftRight[1]
-		outputs := strings.Split(right, ", ")
+		line = strings.ReplaceAll(line, ",", "")
+		line = strings.ReplaceAll(line, "->", "")
+		splitLine := strings.Fields(line)
 
-		if left == "broadcaster" {
-			broadcastTargets = outputs
-		} else {
-			typeStr := string(left[0])
-			name := left[1:]
-			modules[name] = NewModule(name, typeStr, outputs)
+		s, d := splitLine[0], splitLine[1:]
+		var t string
+		if s != "broadcaster" {
+			t = string(s[0])
+			s = s[1:]
+		}
+
+		m[s] = struct {
+			t string
+			d []string
+		}{t, d}
+		f[s] = "off"
+
+		if _, exists := c[s]; !exists {
+			c[s] = make(map[string]string)
+		}
+
+		for _, o := range d {
+			c[o][s] = "low"
+		}
+
+		if len(d) == 1 && d[0] == "rx" {
+			r = s
 		}
 	}
 
-	var feed string
-	for name, module := range modules {
-		for _, output := range module.Outputs {
-			if output == "rx" {
-				feed = name
-				break
-			}
-		}
-		if feed != "" {
-			break
-		}
-	}
+	b := 0
 
-	cycleLengths := make(map[string]int)
-	seen := make(map[string]int)
-	for name := range modules {
-		if _, ok := seen[name]; !ok {
-			seen[name] = 0
-		}
+	for k := range c[r] {
+		l[k] = 0
 	}
-
-	presses := 0
 
 	for {
-		presses++
-		q := make([][3]string, 0)
-		for _, target := range broadcastTargets {
-			q = append(q, [3]string{"broadcaster", target, "lo"})
-		}
+		b++
+		q := []struct{ i, n, p string }{{"button", "broadcaster", "low"}}
 
 		for len(q) > 0 {
-			origin, target, pulse := q[0][0], q[0][1], q[0][2]
+			item := q[0]
 			q = q[1:]
 
-			module, ok := modules[target]
-			if !ok {
+			i, n, p := item.i, item.n, item.p
+			if _, exists := m[n]; !exists {
 				continue
 			}
 
-			if module.Name == feed && pulse == "hi" {
-				seen[origin]++
+			t, d := m[n].t, m[n].d
 
-				if cycleLength, ok := cycleLengths[origin]; !ok {
-					cycleLengths[origin] = presses
+			if t == "" {
+				for _, o := range d {
+					q = append(q, struct{ i, n, p string }{n, o, p})
+				}
+			} else if t == "%" {
+				if p == "low" {
+					s := f[n]
+					if s == "off" {
+						f[n] = "on"
+						for _, o := range d {
+							q = append(q, struct{ i, n, p string }{n, o, "high"})
+						}
+					} else {
+						f[n] = "off"
+						for _, o := range d {
+							q = append(q, struct{ i, n, p string }{n, o, "low"})
+						}
+					}
+				}
+			} else if t == "&" {
+				c[n][i] = p
+				allHigh := true
+				for _, v := range c[n] {
+					if v != "high" {
+						allHigh = false
+						break
+					}
+				}
+				if allHigh {
+					for _, o := range d {
+						q = append(q, struct{ i, n, p string }{n, o, "low"})
+					}
 				} else {
-					if presses != seen[origin]*cycleLength {
-						panic("Assertion failed")
+					for _, o := range d {
+						q = append(q, struct{ i, n, p string }{n, o, "high"})
 					}
 				}
-
-				allSeen := true
-				for _, v := range seen {
-					if v == 0 {
-						allSeen = false
-						break
+				if n == r {
+					for k, v := range c[n] {
+						if v == "high" && l[k] == 0 {
+							l[k] = b
+						}
 					}
-				}
-				if allSeen {
-					x := 1
-					for _, cycleLength := range cycleLengths {
-						x = x * cycleLength / int(GCD((x), (cycleLength)))
-					}
-					fmt.Println(x)
-					os.Exit(0)
-				}
-			}
-
-			if module.Type == "%" {
-				if pulse == "lo" {
-					module.Memory = "on"
-					if module.Memory == "off" {
-						module.Memory = "on"
-					} else {
-						module.Memory = "off"
-					}
-					outgoing := "hi"
-					if module.Memory == "on" {
-						outgoing = "hi"
-					} else {
-						outgoing = "lo"
-					}
-					for _, x := range module.Outputs {
-						q = append(q, [3]string{module.Name, x, outgoing})
-					}
-				}
-			} else {
-				module.Memory.(map[string]string)[origin] = pulse
-				outgoing := "lo"
-				allHi := true
-				for _, x := range module.Memory.(map[string]string) {
-					if x != "hi" {
-						allHi = false
-						break
-					}
-				}
-				if allHi {
-					outgoing = "hi"
-				}
-				for _, x := range module.Outputs {
-					q = append(q, [3]string{module.Name, x, outgoing})
 				}
 			}
 		}
+
+		allPositive := true
+		for _, v := range l {
+			if v <= 0 {
+				allPositive = false
+				break
+			}
+		}
+
+		if allPositive {
+			product := 1
+			for _, v := range l {
+				product *= v
+			}
+			fmt.Println(product)
+			break
+		}
 	}
-}
-func GCD(a, b int) int {
-	for b != 0 {
-		a, b = b, a%b
-	}
-	return a
 }
