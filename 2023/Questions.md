@@ -1656,4 +1656,694 @@ So, the above example ends up with a total focusing power of 145.
 
 **With the help of an over-enthusiastic reindeer in a hard hat, follow the initialization sequence. What is the focusing power of the resulting lens configuration?**
 
+## Question: 16 Day 16
+
 Your puzzle answer was 261505.
+
+--- Day 16: The Floor Will Be Lava ---
+With the beam of light completely focused somewhere, the reindeer leads you deeper still into the Lava Production Facility. At some point, you realize that the steel facility walls have been replaced with cave, and the doorways are just cave, and the floor is cave, and you're pretty sure this is actually just a giant cave.
+
+Finally, as you approach what must be the heart of the mountain, you see a bright light in a cavern up ahead. There, you discover that the beam of light you so carefully focused is emerging from the cavern wall closest to the facility and pouring all of its energy into a contraption on the opposite side.
+
+Upon closer inspection, the contraption appears to be a flat, two-dimensional square grid containing empty space (.), mirrors (/ and \), and splitters (| and -).
+
+The contraption is aligned so that most of the beam bounces around the grid, but each tile on the grid converts some of the beam's light into heat to melt the rock in the cavern.
+
+You note the layout of the contraption (your puzzle input). For example:
+
+```txt
+.|...\....
+|.-.\.....
+.....|-...
+........|.
+..........
+.........\
+..../.\\..
+.-.-/..|..
+.|....-|.\
+..//.|....
+```
+
+The beam enters in the top-left corner from the left and heading to the right. Then, its behavior depends on what it encounters as it moves:
+
+If the beam encounters empty space (.), it continues in the same direction.
+If the beam encounters a mirror (/ or \), the beam is reflected 90 degrees depending on the angle of the mirror. For instance, a rightward-moving beam that encounters a / mirror would continue upward in the mirror's column, while a rightward-moving beam that encounters a \ mirror would continue downward from the mirror's column.
+If the beam encounters the pointy end of a splitter (| or -), the beam passes through the splitter as if the splitter were empty space. For instance, a rightward-moving beam that encounters a - splitter would continue in the same direction.
+If the beam encounters the flat side of a splitter (| or -), the beam is split into two beams going in each of the two directions the splitter's pointy ends are pointing. For instance, a rightward-moving beam that encounters a | splitter would split into two beams: one that continues upward from the splitter's column and one that continues downward from the splitter's column.
+Beams do not interact with other beams; a tile can have many beams passing through it at the same time. A tile is energized if that tile has at least one beam pass through it, reflect in it, or split in it.
+
+In the above example, here is how the beam of light bounces around the contraption:
+
+```txt
+>|<<<\....
+|v-.\^....
+.v...|->>>
+.v...v^.|.
+.v...v^...
+.v...v^..\
+.v../2\\..
+<->-/vv|..
+.|<<<2-|.\
+.v//.|.v..
+```
+
+Beams are only shown on empty tiles; arrows indicate the direction of the beams. If a tile contains beams moving in multiple directions, the number of distinct directions is shown instead. Here is the same diagram but instead only showing whether a tile is energized (#) or not (.):
+
+```txt
+###### ....
+.#...#....
+.#...#####
+.#...##...
+.#...##...
+.#...##...
+.#..####..
+######## ..
+.#######..
+.#...#.#..
+
+```
+
+Ultimately, in this example, 46 tiles become energized.
+
+**The light isn't energizing enough tiles to produce lava; to debug the contraption, you need to start by analyzing the current situation. With the beam starting in the top-left heading right, how many tiles end up being energized?**
+
+Your puzzle answer was 7472.
+
+--- Part Two ---
+As you try to work out what might be wrong, the reindeer tugs on your shirt and leads you to a nearby control panel. There, a collection of buttons lets you align the contraption so that the beam enters from any edge tile and heading away from that edge. (You can choose either of two directions for the beam if it starts on a corner; for instance, if the beam starts in the bottom-right corner, it can start heading either left or upward.)
+
+So, the beam could start on any tile in the top row (heading downward), any tile in the bottom row (heading upward), any tile in the leftmost column (heading right), or any tile in the rightmost column (heading left). To produce lava, you need to find the configuration that energizes as many tiles as possible.
+
+In the above example, this can be achieved by starting the beam in the fourth tile from the left in the top row:
+
+```txt
+.|<2<\....
+|v-v\^....
+.v.v.|->>>
+.v.v.v^.|.
+.v.v.v^...
+.v.v.v^..\
+.v.v/2\\..
+<-2-/vv|..
+.|<<<2-|.\
+.v//.|.v..
+Using this configuration, 51 tiles are energized:
+
+.#####....
+.#.#.#....
+.#.#.#####
+.#.#.##...
+.#.#.##...
+.#.#.##...
+.#.#####..
+########..
+.#######..
+.#...#.#..
+
+```
+
+**Find the initial beam configuration that energizes the largest number of tiles; how many tiles are energized in that configuration?**
+
+Your puzzle answer was 7716.
+
+## Question: 17 Day - 17
+
+--- Day 17: Clumsy Crucible ---
+The lava starts flowing rapidly once the Lava Production Facility is operational. As you leave, the reindeer offers you a parachute, allowing you to quickly reach Gear Island.
+
+As you descend, your bird's-eye view of Gear Island reveals why you had trouble finding anyone on your way up: half of Gear Island is empty, but the half below you is a giant factory city!
+
+You land near the gradually-filling pool of lava at the base of your new lava-fall. Lava-ducts will eventually carry the lava throughout the city, but to make use of it immediately, Elves are loading it into large crucibles on wheels.
+
+The crucibles are top-heavy and pushed by hand. Unfortunately, the crucibles become very difficult to steer at high speeds, and so it can be hard to go in a straight line for very long.
+
+To get Desert Island the machine parts it needs as soon as possible, you'll need to find the best way to get the crucible from the lava pool to the machine parts factory. To do this, you need to minimize heat loss while choosing a route that doesn't require the crucible to go in a straight line for too long.
+
+Fortunately, the Elves here have a map (your puzzle input) that uses traffic patterns, ambient temperature, and hundreds of other parameters to calculate exactly how much heat loss can be expected for a crucible entering any particular city block.
+
+For example:
+
+```txt
+2413432311323
+3215453535623
+3255245654254
+3446585845452
+4546657867536
+1438598798454
+4457876987766
+3637877979653
+4654967986887
+4564679986453
+1224686865563
+2546548887735
+4322674655533
+```
+
+Each city block is marked by a single digit that represents the amount of heat loss if the crucible enters that block. The starting point, the lava pool, is the top-left city block; the destination, the machine parts factory, is the bottom-right city block. (Because you already start in the top-left block, you don't incur that block's heat loss unless you leave that block and then return to it.)
+
+Because it is difficult to keep the top-heavy crucible going in a straight line for very long, it can move at most three blocks in a single direction before it must turn 90 degrees left or right. The crucible also can't reverse direction; after entering each city block, it may only turn left, continue straight, or turn right.
+
+One way to minimize heat loss is this path:
+
+```txt
+2>>34^>>>1323
+32v>>>35v5623
+32552456v>>54
+3446585845v52
+4546657867v>6
+14385987984v4
+44578769877v6
+36378779796v>
+465496798688v
+456467998645v
+12246868655<v
+25465488877v5
+43226746555v>
+```
+
+This path never moves more than three consecutive blocks in the same direction and incurs a heat loss of only 102.
+
+**Directing the crucible from the lava pool to the machine parts factory, but not moving more than three consecutive blocks in the same direction, what is the least heat loss it can incur?**
+
+Your puzzle answer was 843.
+
+--- Part Two ---
+The crucibles of lava simply aren't large enough to provide an adequate supply of lava to the machine parts factory. Instead, the Elves are going to upgrade to ultra crucibles.
+
+Ultra crucibles are even more difficult to steer than normal crucibles. Not only do they have trouble going in a straight line, but they also have trouble turning!
+
+Once an ultra crucible starts moving in a direction, it needs to move a minimum of four blocks in that direction before it can turn (or even before it can stop at the end). However, it will eventually start to get wobbly: an ultra crucible can move a maximum of ten consecutive blocks without turning.
+
+In the above example, an ultra crucible could follow this path to minimize heat loss:
+
+```txt
+2>>>>>>>>1323
+32154535v5623
+32552456v4254
+34465858v5452
+45466578v>>>>
+143859879845v
+445787698776v
+363787797965v
+465496798688v
+456467998645v
+122468686556v
+254654888773v
+432267465553v
+```
+
+In the above example, an ultra crucible would incur the minimum possible heat loss of 94.
+
+Here's another example:
+
+```txt
+111111111111
+999999999991
+999999999991
+999999999991
+999999999991
+```
+
+Sadly, an ultra crucible would need to take an unfortunate path like this one:
+
+```txt
+1>>>>>>>1111
+9999999v9991
+9999999v9991
+9999999v9991
+9999999v>>>>
+
+```
+
+This route causes the ultra crucible to incur the minimum possible heat loss of 71.
+
+**Directing the ultra crucible from the lava pool to the machine parts factory, what is the least heat loss it can incur?**
+
+Your puzzle answer was 1017.
+
+## Question: 18 Day - 18
+
+--- Day 18: LavaDuct Lagoon ---
+Thanks to your efforts, the machine parts factory is one of the first factories up and running since the lava-fall came back. However, to catch up with the large backlog of parts requests, the factory will also need a large supply of lava for a while; the Elves have already started creating a large lagoon nearby for this purpose.
+
+However, they aren't sure the lagoon will be big enough; they've asked you to take a look at the dig plan (your puzzle input). For example:
+
+```txt
+R 6 (#70c710)
+D 5 (#0dc571)
+L 2 (#5713f0)
+D 2 (#d2c081)
+R 2 (#59c680)
+D 2 (#411b91)
+L 5 (#8ceee2)
+U 2 (#caa173)
+L 1 (#1b58a2)
+U 2 (#caa171)
+R 2 (#7807d2)
+U 3 (#a77fa3)
+L 2 (#015232)
+U 2 (#7a21e3)
+```
+
+The digger starts in a 1 meter cube hole in the ground. They then dig the specified number of meters up (U), down (D), left (L), or right (R), clearing full 1 meter cubes as they go. The directions are given as seen from above, so if "up" were north, then "right" would be east, and so on. Each trench is also listed with the color that the edge of the trench should be painted as an RGB hexadecimal color code.
+
+When viewed from above, the above example dig plan would result in the following loop of trench (#) having been dug out from otherwise ground-level terrain (.):
+
+```txt
+#######
+# ..... #
+### ... #
+..#...#
+..#...#
+### . ###
+# ...#..
+## .. ###
+.#....#
+.######
+```
+
+At this point, the trench could contain 38 cubic meters of lava. However, this is just the edge of the lagoon; the next step is to dig out the interior so that it is one meter deep as well:
+
+```txt
+#######
+#######
+#######
+..#####
+..#####
+#######
+##### ..
+#######
+.######
+.######
+```
+
+Now, the lagoon can contain a much more respectable 62 cubic meters of lava. While the interior is dug out, the edges are also painted according to the color codes in the dig plan.
+
+**The Elves are concerned the lagoon won't be large enough; if they follow their dig plan, how many cubic meters of lava could it hold?**
+
+Your puzzle answer was 28911.
+
+--- Part Two ---
+The Elves were right to be concerned; the planned lagoon would be much too small.
+
+After a few minutes, someone realizes what happened; someone swapped the color and instruction parameters when producing the dig plan. They don't have time to fix the bug; one of them asks if you can extract the correct instructions from the hexadecimal codes.
+
+Each hexadecimal code is six hexadecimal digits long. The first five hexadecimal digits encode the distance in meters as a five-digit hexadecimal number. The last hexadecimal digit encodes the direction to dig: 0 means R, 1 means D, 2 means L, and 3 means U.
+
+So, in the above example, the hexadecimal codes can be converted into the true instructions:
+
+```txt
+#70c710 = R 461937
+#0dc571 = D 56407
+#5713f0 = R 356671
+#d2c081 = D 863240
+#59c680 = R 367720
+#411b91 = D 266681
+#8ceee2 = L 577262
+#caa173 = U 829975
+#1b58a2 = L 112010
+#caa171 = D 829975
+#7807d2 = L 491645
+#a77fa3 = U 686074
+#015232 = L 5411
+#7a21e3 = U 500254
+```
+
+Digging out this loop and its interior produces a lagoon that can hold an impressive 952408144115 cubic meters of lava.
+
+**Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new dig plan, how many cubic meters of lava could the lagoon hold?**
+
+Your puzzle answer was 77366737561114.
+
+## Question: 19 Day - 19
+
+--- Day 19: Aplenty ---
+The Elves of Gear Island are thankful for your help and send you on your way. They even have a hang glider that someone stole from Desert Island; since you're already going that direction, it would help them a lot if you would use it to get down there and return it to them.
+
+As you reach the bottom of the relentless avalanche of machine parts, you discover that they're already forming a formidable heap. Don't worry, though - a group of Elves is already here organizing the parts, and they have a system.
+
+To start, each part is rated in each of four categories:
+
+x: Extremely cool looking
+m: Musical (it makes a noise when you hit it)
+a: Aerodynamic
+s: Shiny
+Then, each part is sent through a series of workflows that will ultimately accept or reject the part. Each workflow has a name and contains a list of rules; each rule specifies a condition and where to send the part if the condition is true. The first rule that matches the part being considered is applied immediately, and the part moves on to the destination described by the rule. (The last rule in each workflow has no condition and always applies if reached.)
+
+Consider the workflow ex{x>10:one,m<20:two,a>30:R,A}. This workflow is named ex and contains four rules. If workflow ex were considering a specific part, it would perform the following steps in order:
+
+Rule "x>10:one": If the part's x is more than 10, send the part to the workflow named one.
+Rule "m<20:two": Otherwise, if the part's m is less than 20, send the part to the workflow named two.
+Rule "a>30:R": Otherwise, if the part's a is more than 30, the part is immediately rejected (R).
+Rule "A": Otherwise, because no other rules matched the part, the part is immediately accepted (A).
+If a part is sent to another workflow, it immediately switches to the start of that workflow instead and never returns. If a part is accepted (sent to A) or rejected (sent to R), the part immediately stops any further processing.
+
+The system works, but it's not keeping up with the torrent of weird metal shapes. The Elves ask if you can help sort a few parts and give you the list of workflows and some part ratings (your puzzle input). For example:
+
+```txt
+px{a<2006:qkq,m>2090:A,rfg}
+pv{a>1716:R,A}
+lnx{m>1548:A,A}
+rfg{s<537:gd,x>2440:R,A}
+qs{s>3448:A,lnx}
+qkq{x<1416:A,crn}
+crn{x>2662:A,R}
+in{s<1351:px,qqz}
+qqz{s>2770:qs,m<1801:hdj,R}
+gd{a>3333:R,R}
+hdj{m>838:A,pv}
+
+{x=787,m=2655,a=1222,s=2876}
+{x=1679,m=44,a=2067,s=496}
+{x=2036,m=264,a=79,s=2244}
+{x=2461,m=1339,a=466,s=291}
+{x=2127,m=1623,a=2188,s=1013}
+```
+
+The workflows are listed first, followed by a blank line, then the ratings of the parts the Elves would like you to sort. All parts begin in the workflow named in. In this example, the five listed parts go through the following workflows:
+
+```txt
+{x=787,m=2655,a=1222,s=2876}: in -> qqz -> qs -> lnx -> A
+{x=1679,m=44,a=2067,s=496}: in -> px -> rfg -> gd -> R
+{x=2036,m=264,a=79,s=2244}: in -> qqz -> hdj -> pv -> A
+{x=2461,m=1339,a=466,s=291}: in -> px -> qkq -> crn -> R
+{x=2127,m=1623,a=2188,s=1013}: in -> px -> rfg -> A
+```
+
+Ultimately, three parts are accepted. Adding up the x, m, a, and s rating for each of the accepted parts gives 7540 for the part with x=787, 4623 for the part with x=2036, and 6951 for the part with x=2127. Adding all of the ratings for all of the accepted parts gives the sum total of 19114.
+
+**Sort through all of the parts you've been given; what do you get if you add together all of the rating numbers for all of the parts that ultimately get accepted?**
+
+Your puzzle answer was 480738.
+
+--- Part Two ---
+Even with your help, the sorting process still isn't fast enough.
+
+One of the Elves comes up with a new plan: rather than sort parts individually through all of these workflows, maybe you can figure out in advance which combinations of ratings will be accepted or rejected.
+
+Each of the four ratings (x, m, a, s) can have an integer value ranging from a minimum of 1 to a maximum of 4000. Of all possible distinct combinations of ratings, your job is to figure out which ones will be accepted.
+
+In the above example, there are 167409079868000 distinct combinations of ratings that will be accepted.
+
+**Consider only your list of workflows; the list of part ratings that the Elves wanted you to sort is no longer relevant. How many distinct combinations of ratings will be accepted by the Elves' workflows?**
+
+Your puzzle answer was 131550418841958.
+
+## Question: 20 Day - 20
+
+--- Day 20: Pulse Propagation ---
+With your help, the Elves manage to find the right parts and fix all of the machines. Now, they just need to send the command to boot up the machines and get the sand flowing again.
+
+The machines are far apart and wired together with long cables. The cables don't connect to the machines directly, but rather to communication modules attached to the machines that perform various initialization tasks and also act as communication relays.
+
+Modules communicate using pulses. Each pulse is either a high pulse or a low pulse. When a module sends a pulse, it sends that type of pulse to each module in its list of destination modules.
+
+There are several different types of modules:
+
+Flip-flop modules (prefix %) are either on or off; they are initially off. If a flip-flop module receives a high pulse, it is ignored and nothing happens. However, if a flip-flop module receives a low pulse, it flips between on and off. If it was off, it turns on and sends a high pulse. If it was on, it turns off and sends a low pulse.
+
+Conjunction modules (prefix &) remember the type of the most recent pulse received from each of their connected input modules; they initially default to remembering a low pulse for each input. When a pulse is received, the conjunction module first updates its memory for that input. Then, if it remembers high pulses for all inputs, it sends a low pulse; otherwise, it sends a high pulse.
+
+There is a single broadcast module (named broadcaster). When it receives a pulse, it sends the same pulse to all of its destination modules.
+
+Here at Desert Machine Headquarters, there is a module with a single button on it called, aptly, the button module. When you push the button, a single low pulse is sent directly to the broadcaster module.
+
+After pushing the button, you must wait until all pulses have been delivered and fully handled before pushing it again. Never push the button if modules are still processing pulses.
+
+Pulses are always processed in the order they are sent. So, if a pulse is sent to modules a, b, and c, and then module a processes its pulse and sends more pulses, the pulses sent to modules b and c would have to be handled first.
+
+The module configuration (your puzzle input) lists each module. The name of the module is preceded by a symbol identifying its type, if any. The name is then followed by an arrow and a list of its destination modules. For example:
+
+```txt
+broadcaster -> a, b, c
+%a -> b
+%b -> c
+%c -> inv
+&inv -> a
+```
+
+In this module configuration, the broadcaster has three destination modules named a, b, and c. Each of these modules is a flip-flop module (as indicated by the % prefix). a outputs to b which outputs to c which outputs to another module named inv. inv is a conjunction module (as indicated by the & prefix) which, because it has only one input, acts like an inverter (it sends the opposite of the pulse type it receives); it outputs to a.
+
+By pushing the button once, the following pulses are sent:
+
+```txt
+button -low-> broadcaster
+broadcaster -low-> a
+broadcaster -low-> b
+broadcaster -low-> c
+a -high-> b
+b -high-> c
+c -high-> inv
+inv -low-> a
+a -low-> b
+b -low-> c
+c -low-> inv
+inv -high-> a
+```
+
+After this sequence, the flip-flop modules all end up off, so pushing the button again repeats the same sequence.
+
+Here's a more interesting example:
+
+```txt
+broadcaster -> a
+%a -> inv, con
+&inv -> b
+%b -> con
+&con -> output
+```
+
+This module configuration includes the broadcaster, two flip-flops (named a and b), a single-input conjunction module (inv), a multi-input conjunction module (con), and an untyped module named output (for testing purposes). The multi-input conjunction module con watches the two flip-flop modules and, if they're both on, sends a low pulse to the output module.
+
+Here's what happens if you push the button once:
+
+```txt
+button -low-> broadcaster
+broadcaster -low-> a
+a -high-> inv
+a -high-> con
+inv -low-> b
+con -high-> output
+b -high-> con
+con -low-> output
+```
+
+Both flip-flops turn on and a low pulse is sent to output! However, now that both flip-flops are on and con remembers a high pulse from each of its two inputs, pushing the button a second time does something different:
+
+```txt
+button -low-> broadcaster
+broadcaster -low-> a
+a -low-> inv
+a -low-> con
+inv -high-> b
+con -high-> output
+```
+
+Flip-flop a turns off! Now, con remembers a low pulse from module a, and so it sends only a high pulse to output.
+
+Push the button a third time:
+
+```txt
+button -low-> broadcaster
+broadcaster -low-> a
+a -high-> inv
+a -high-> con
+inv -low-> b
+con -low-> output
+b -low-> con
+con -high-> output
+```
+
+This time, flip-flop a turns on, then flip-flop b turns off. However, before b can turn off, the pulse sent to con is handled first, so it briefly remembers all high pulses for its inputs and sends a low pulse to output. After that, flip-flop b turns off, which causes con to update its state and send a high pulse to output.
+
+Finally, with a on and b off, push the button a fourth time:
+
+```txt
+button -low-> broadcaster
+broadcaster -low-> a
+a -low-> inv
+a -low-> con
+inv -high-> b
+con -high-> output
+```
+
+This completes the cycle: a turns off, causing con to remember only low pulses and restoring all modules to their original states.
+
+To get the cables warmed up, the Elves have pushed the button 1000 times. How many pulses got sent as a result (including the pulses sent by the button itself)?
+
+In the first example, the same thing happens every time the button is pushed: 8 low pulses and 4 high pulses are sent. So, after pushing the button 1000 times, 8000 low pulses and 4000 high pulses are sent. Multiplying these together gives 32000000.
+
+In the second example, after pushing the button 1000 times, 4250 low pulses and 2750 high pulses are sent. Multiplying these together gives 11687500.
+
+**Consult your module configuration; determine the number of low pulses and high pulses that would be sent after pushing the button 1000 times, waiting for all pulses to be fully handled after each push of the button. What do you get if you multiply the total number of low pulses sent by the total number of high pulses sent?**
+
+Your puzzle answer was 666795063.
+
+--- Part Two ---
+The final machine responsible for moving the sand down to Island Island has a module attached named rx. The machine turns on when a single low pulse is sent to rx.
+
+**Reset all modules to their default states. Waiting for all pulses to be fully handled after each button press, what is the fewest number of button presses required to deliver a single low pulse to the module named rx?**
+
+Your puzzle answer was 253302889093151.
+
+## Question: 21 Day - 21
+
+--- Day 21: Step Counter ---
+You manage to catch the airship right as it's dropping someone else off on their all-expenses-paid trip to Desert Island! It even helpfully drops you off near the gardener and his massive farm.
+
+"You got the sand flowing again! Great work! Now we just need to wait until we have enough sand to filter the water for Snow Island and we'll have snow again in no time."
+
+While you wait, one of the Elves that works with the gardener heard how good you are at solving problems and would like your help. He needs to get his steps in for the day, and so he'd like to know which garden plots he can reach with exactly his remaining 64 steps.
+
+He gives you an up-to-date map (your puzzle input) of his starting position (S), garden plots (.), and rocks (#). For example:
+
+```txt
+...........
+.....###.#.
+.###.##..#.
+..#.#...#..
+....#.#....
+.##..S####.
+.##..#...#.
+.......##..
+.##.#.####.
+.##..##.##.
+...........
+```
+
+The Elf starts at the starting position (S) which also counts as a garden plot. Then, he can take one step north, south, east, or west, but only onto tiles that are garden plots. This would allow him to reach any of the tiles marked O:
+
+```txt
+...........
+.....###.#.
+.###.##..#.
+..#.#...#..
+....#O#....
+.##.OS####.
+.##..#...#.
+.......##..
+.##.#.####.
+.##..##.##.
+...........
+```
+
+Then, he takes a second step. Since at this point he could be at either tile marked O, his second step would allow him to reach any garden plot that is one step north, south, east, or west of any tile that he could have reached after the first step:
+
+```txt
+...........
+.....###.#.
+.###.##..#.
+..#.#O..#..
+....#.#....
+.##O.O####.
+.##.O#...#.
+.......##..
+.##.#.####.
+.##..##.##.
+...........
+```
+
+After two steps, he could be at any of the tiles marked O above, including the starting position (either by going north-then-south or by going west-then-east).
+
+A single third step leads to even more possibilities:
+
+```txt
+...........
+.....###.#.
+.###.##..#.
+..#.#.O.#..
+...O#O#....
+.##.OS####.
+.##O.#...#.
+....O..##..
+.##.#.####.
+.##..##.##.
+...........
+```
+
+He will continue like this until his steps for the day have been exhausted. After a total of 6 steps, he could reach any of the garden plots marked O:
+
+```txt
+...........
+.....###.#.
+.###.##.O#.
+.O#O#O.O#..
+O.O.#.#.O..
+.##O.O####.
+.##.O#O..#.
+.O.O.O.##..
+.##.#.####.
+.##O.##.##.
+...........
+```
+
+In this example, if the Elf's goal was to get exactly 6 more steps today, he could use them to reach any of 16 garden plots.
+
+However, the Elf actually needs to get 64 steps today, and the map he's handed you is much larger than the example map.
+
+**Starting from the garden plot marked S on your map, how many garden plots could the Elf reach in exactly 64 steps?**
+
+Your puzzle answer was 3671.
+
+--- Part Two ---
+The Elf seems confused by your answer until he realizes his mistake: he was reading from a list of his favorite numbers that are both perfect squares and perfect cubes, not his step counter.
+
+The actual number of steps he needs to get today is exactly 26501365.
+
+He also points out that the garden plots and rocks are set up so that the map repeats infinitely in every direction.
+
+So, if you were to look one additional map-width or map-height out from the edge of the example map above, you would find that it keeps repeating:
+
+```txt
+.................................
+.....###.#......###.#......###.#.
+.###.##..#..###.##..#..###.##..#.
+..#.#...#....#.#...#....#.#...#..
+....#.#........#.#........#.#....
+.##...####..##...####..##...####.
+.##..#...#..##..#...#..##..#...#.
+.......##.........##.........##..
+.##.#.####..##.#.####..##.#.####.
+.##..##.##..##..##.##..##..##.##.
+.................................
+.................................
+.....###.#......###.#......###.#.
+.###.##..#..###.##..#..###.##..#.
+..#.#...#....#.#...#....#.#...#..
+....#.#........#.#........#.#....
+.##...####..##..S####..##...####.
+.##..#...#..##..#...#..##..#...#.
+.......##.........##.........##..
+.##.#.####..##.#.####..##.#.####.
+.##..##.##..##..##.##..##..##.##.
+.................................
+.................................
+.....###.#......###.#......###.#.
+.###.##..#..###.##..#..###.##..#.
+..#.#...#....#.#...#....#.#...#..
+....#.#........#.#........#.#....
+.##...####..##...####..##...####.
+.##..#...#..##..#...#..##..#...#.
+.......##.........##.........##..
+.##.#.####..##.#.####..##.#.####.
+.##..##.##..##..##.##..##..##.##.
+.................................
+```
+
+This is just a tiny three-map-by-three-map slice of the inexplicably-infinite farm layout; garden plots and rocks repeat as far as you can see. The Elf still starts on the one middle tile marked S, though - every other repeated S is replaced with a normal garden plot (.).
+
+Here are the number of reachable garden plots in this new infinite version of the example map for different numbers of steps:
+
+```txt
+In exactly 6 steps, he can still reach 16 garden plots.
+In exactly 10 steps, he can reach any of 50 garden plots.
+In exactly 50 steps, he can reach 1594 garden plots.
+In exactly 100 steps, he can reach 6536 garden plots.
+In exactly 500 steps, he can reach 167004 garden plots.
+In exactly 1000 steps, he can reach 668697 garden plots.
+In exactly 5000 steps, he can reach 16733044 garden plots.
+```
+
+**However, the step count the Elf needs is much larger! Starting from the garden plot marked S on your infinite map, how many garden plots could the Elf reach in exactly 26501365 steps?**
+
+Your puzzle answer was 609708004316870.
