@@ -28,6 +28,6 @@ Implemented in Go, TypeScript & Dart
 
 First Implement then Make it ---*FAST*----
 
-### **Notice:**
+## **Notice:**
 
-As Soon we finish the 25th last day of Advent of Code - We will Make every Implementation of this Repo **Blazingly Fast** and We will Make a Website Where Will user just have to put his input data and **BOOM** with [ HTMX + Templ + Go] If not then (ASTRO [a JS Framework]) and also for those Who just wanna write the own code Of Course they can write in any language they want at first It will be limited but I will do it anyway.
+I Will make everything blazingly Fast At the End of ADVENT OF CODE. Sit Tight and ENjoy Margarita 🍹🍸 on Beach 🌴🍹🍉⛱️🥥
