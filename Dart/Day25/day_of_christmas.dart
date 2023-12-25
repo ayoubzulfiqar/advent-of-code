@@ -1,69 +1,158 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:math';
 
-void main() {
-  var input = File('Dart/Day25/input.txt').readAsLinesSync();
+typedef NetworkEdge = ({String node, double weight});
 
-  var dotFile = StringBuffer();
-  dotFile.writeln("graph {");
+int multipleSizeOfTwoGroups() {
+  final graph = <String, List<NetworkEdge>>{};
+  final file = File("Dart/Day25/input.txt").readAsLinesSync();
 
-  var wires = <String, Set<String>>{};
-  for (var line in input) {
-    var parts = line.split(": ");
-    var wire = parts[0].trim();
-    var connections = parts[1].trim().split(" ").toList();
+  for (final line in file.where((line) => line.isNotEmpty)) {
+    final parts = line.split(':');
 
-    wires[wire] ??= {}; // Ensure wires[wire] is initialized as an empty set.
+    final (from, to) = (parts[0], parts[1].trim().split(' '));
+    graph
+        .putIfAbsent(from, () => [])
+        .addAll(to.map((node) => (node: node, weight: 1)));
 
-    for (var connection in connections) {
-      // Generate content for a GraphViz graph.
-      dotFile.writeln("    $wire -- $connection");
-
-      wires[connection] ??= {};
-
-      wires[wire]?.add(connection);
-      wires[connection]?.add(wire);
+    for (final node in to) {
+      graph.putIfAbsent(node, () => []).add((node: from, weight: 1));
     }
   }
 
-  dotFile.writeln("}");
-  File('graph.dot').writeAsStringSync(dotFile.toString());
+  var ans = 0;
+  for (final source in graph.keys) {
+    for (final sink in graph.keys) {
+      if (source != sink) {
+        final (:maxFlow, :minCutPartitionSize) = edmondKarp(
+          graph,
+          source,
+          sink,
+        );
+        if (maxFlow == 3) {
+          ans = minCutPartitionSize * (graph.keys.length - minCutPartitionSize);
+          break;
+        }
+      }
+    }
+  }
+  print(ans);
+  return ans;
+}
 
-  // Edges to be removed
-  const a1 = "cbl";
-  const b1 = "vmq";
+({bool isPath, List<String> path}) bfs(
+  Map<String, List<NetworkEdge>> residualGraph,
+  String source,
+  String sink,
+) {
+  final visited = <String>{};
+  final queue = Queue<String>();
+  final paths = <String, List<String>>{};
 
-  const a2 = "bvz";
-  const b2 = "nvf";
-
-  const a3 = "klk";
-  const b3 = "xgz";
-
-  wires[a1]?.remove(b1);
-  wires[b1]?.remove(a1);
-  wires[a2]?.remove(b2);
-  wires[b2]?.remove(a2);
-  wires[a3]?.remove(b3);
-  wires[b3]?.remove(a3);
-
-  // BFS to count the number of reachable nodes from a random single node of the removed pairs
-  var visited = Set<String>();
-  var queue = Queue<String>();
-  queue.add(a1);
+  queue.add(source);
+  visited.add(source);
+  paths[source] = [source];
 
   while (queue.isNotEmpty) {
-    var current = queue.removeFirst();
+    final node = queue.removeFirst();
 
-    if (!visited.add(current)) {
-      continue;
+    if (node == sink) {
+      return (isPath: true, path: paths[node]!);
     }
 
-    for (var connection in wires[current] ?? {}) {
-      queue.add(connection);
+    for (final edge in residualGraph[node]!) {
+      if (!visited.contains(edge.node) && edge.weight > 0) {
+        queue.add(edge.node);
+        visited.add(edge.node);
+        paths[edge.node] = [...paths[node]!, edge.node];
+      }
     }
   }
 
-  // Calculate the size of the other subset
-  var part1 = visited.length * (wires.length - visited.length);
-  print("Part 1: $part1");
+  return (isPath: false, path: []);
+}
+
+void dfs(
+  Map<String, List<NetworkEdge>> residualGraph,
+  String node,
+  Set<String> visited,
+) {
+  visited.add(node);
+
+  for (final edge in residualGraph[node]!) {
+    if (!visited.contains(edge.node) && edge.weight > 0) {
+      dfs(residualGraph, edge.node, visited);
+    }
+  }
+}
+
+({int maxFlow, int minCutPartitionSize}) edmondKarp(
+  Map<String, List<NetworkEdge>> graph,
+  String source,
+  String sink,
+) {
+  final residualGraph = <String, List<NetworkEdge>>{};
+  for (final node in graph.keys) {
+    residualGraph[node] = [];
+    for (final edge in graph[node]!) {
+      residualGraph[node]!.add(edge);
+    }
+  }
+
+  var maxFlow = 0.0;
+  while (true) {
+    final (:isPath, :path) = bfs(residualGraph, source, sink);
+    if (!isPath) {
+      break;
+    }
+
+    var minCapacity = double.infinity;
+    for (var i = 0; i < path.length - 1; i++) {
+      final from = path[i];
+      final to = path[i + 1];
+
+      for (final edge in residualGraph[from]!) {
+        if (edge.node == to) {
+          minCapacity = min(minCapacity, edge.weight);
+          break;
+        }
+      }
+    }
+
+    for (var i = 0; i < path.length - 1; i++) {
+      final from = path[i];
+      final to = path[i + 1];
+
+      for (final edge in residualGraph[from]!) {
+        if (edge.node == to) {
+          residualGraph[from]!.remove(edge);
+          residualGraph[from]!.add(
+            (node: to, weight: edge.weight - minCapacity),
+          );
+          break;
+        }
+      }
+
+      for (final edge in residualGraph[to]!) {
+        if (edge.node == from) {
+          residualGraph[to]!.remove(edge);
+          residualGraph[to]!.add(
+            (node: from, weight: edge.weight + minCapacity),
+          );
+          break;
+        }
+      }
+    }
+
+    maxFlow += minCapacity;
+  }
+
+  final visited = <String>{};
+  dfs(residualGraph, source, visited);
+
+  return (
+    maxFlow: maxFlow.toInt(),
+    minCutPartitionSize: visited.length,
+  );
 }
