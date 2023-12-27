@@ -34,4 +34,5 @@ First Implement then Make it ---*FAST*----
 
 ## **Notice:**
 
-I Will make everything blazingly Fast At the End of ADVENT OF CODE. Sit Tight and ENjoy Margarita 🍹🍸 on Beach 🌴🍹🍉⛱️🥥
+Now the Advent of Code has Ended... AND
+The Time has Come to make everything *blazingly fast*
