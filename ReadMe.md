@@ -31,8 +31,3 @@ Implemented in Go, TypeScript & Dart
 |[Day-25](Go/Day25)|[Day-25](Dart/Day25)|[Day-25](TypeScript/Day25)|
 
 First Implement then Make it ---*FAST*----
-
-## **Notice:**
-
-Now the Advent of Code has Ended... AND
-The Time has Come to make everything *blazingly fast*
