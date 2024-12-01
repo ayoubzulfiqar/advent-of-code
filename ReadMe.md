@@ -1,4 +1,4 @@
-# Advent of Code - 2023
+# Advent of Code: 2023 - 2024
 
 Implemented in Go, TypeScript & Dart
 
@@ -30,4 +30,10 @@ Implemented in Go, TypeScript & Dart
 |[Day-24](2023/Go/Day24)|[Day-24](2023/Dart/Day24)|[Day-24](2023/TypeScript/Day24)|
 |[Day-25](2023/Go/Day25)|[Day-25](2023/Dart/Day25)|[Day-25](2023/TypeScript/Day25)|
 
-First Implement then Make it ---*FAST*----
+---
+
+Implemented in Go and Python (because of busy schedule i would do only in two of my favorite programming languages)
+
+|**Go**|**Python**|
+|------|----------|
+|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|
