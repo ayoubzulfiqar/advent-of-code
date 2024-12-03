@@ -38,3 +38,4 @@ Implemented in Go and Python
 |------|----------|
 |[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|
 |[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|
+|[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|
