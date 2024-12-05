@@ -1,5 +1,21 @@
 # Advent of Code: 2023 - 2024
 
+## Advent of Code 2024
+
+Implemented in Go and Python
+
+|**Go**|**Python**|
+|------|----------|
+|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|
+|[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|
+|[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|
+|[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|
+|[Day-5](2024/Go/Day5)|[Day-5](2024/Python/Day5)|
+
+---
+
+## Advent of Code 2023
+
 Implemented in Go, TypeScript & Dart
 
 |**Go**|**Dart**|**TypeScript**|
@@ -31,12 +47,3 @@ Implemented in Go, TypeScript & Dart
 |[Day-25](2023/Go/Day25)|[Day-25](2023/Dart/Day25)|[Day-25](2023/TypeScript/Day25)|
 
 ---
-
-Implemented in Go and Python
-
-|**Go**|**Python**|
-|------|----------|
-|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|
-|[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|
-|[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|
-|[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|
