@@ -22,6 +22,7 @@ Implemented in Go and Python (R - coming soon)
 |[Day-14](2024/Go/Day14)|[Day-14](2024/Python/Day14)|
 |[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|
 |[Day-16](2024/Go/Day16)|[Day-16](2024/Python/Day16)|
+|[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
 
 ---
 
