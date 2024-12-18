@@ -23,6 +23,12 @@ Implemented in Go and Python (R - coming soon)
 |[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|
 |[Day-16](2024/Go/Day16)|[Day-16](2024/Python/Day16)|
 |[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
+|[Day-18](2024/Go/Day18)|[Day-18](2024/Python/Day18)|
+
+---
+If you are wondering by some part of the code is commented. Because i wanna write  pure code for every part even if it means to write some duplicate functions in both part specifically in golang and i don't wanna write util functionality which contain some parts of the code to prevent duplication. i don't want to change the names either so deal with it
+
+Solution: Just uncomment the code in part-1 and run than comment the code in part-2 and run vice versa
 
 ---
 
