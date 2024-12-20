@@ -25,6 +25,7 @@ Implemented in Go and Python (R - coming soon)
 |[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
 |[Day-18](2024/Go/Day18)|[Day-18](2024/Python/Day18)|
 |[Day-19](2024/Go/Day19)|[Day-19](2024/Python/Day19)|
+|[Day-20](2024/Go/Day20)|[Day-20](2024/Python/Day20)|
 
 ---
 If you are wondering by some part of the code is commented. Because i wanna write  pure code for every part even if it means to write some duplicate functions in both part specifically in golang and i don't wanna write util functionality which contain some parts of the code to prevent duplication. i don't want to change the names either so deal with it
