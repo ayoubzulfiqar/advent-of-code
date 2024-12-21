@@ -4,9 +4,9 @@
 
 Implemented in Go and Python (Rust - coming soon)
 
-|**Go**|**Python**|**Go**|**Python**|
-|------|----------|------|----------|
-|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|[Day-11](2024/Go/Day11)|[Day-11](2024/Python/Day11)|
+|**Go**|**Python**|**Go**|**Python**|**Go**|**Python**|
+|------|----------|------|----------|------|----------|
+|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|[Day-11](2024/Go/Day11)|[Day-11](2024/Python/Day11)|[Day-21](2024/Go/Day21)|[Day-21](2024/Python/Day21)|
 |[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|[Day-12](2024/Go/Day12)|[Day-12](2024/Python/Day12)|
 |[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|[Day-13](2024/Go/Day13)|[Day-13](2024/Python/Day13)|
 |[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|[Day-14](2024/Go/Day14)|[Day-14](2024/Python/Day14)|
