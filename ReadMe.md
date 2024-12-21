@@ -2,30 +2,20 @@
 
 ## Advent of Code 2024
 
-Implemented in Go and Python (R - coming soon)
+Implemented in Go and Python (Rust - coming soon)
 
-|**Go**|**Python**|
-|------|----------|
-|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|
-|[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|
-|[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|
-|[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|
-|[Day-5](2024/Go/Day5)|[Day-5](2024/Python/Day5)|
-|[Day-6](2024/Go/Day6)|[Day-6](2024/Python/Day6)|
-|[Day-7](2024/Go/Day7)|[Day-7](2024/Python/Day7)|
-|[Day-8](2024/Go/Day8)|[Day-8](2024/Python/Day8)|
-|[Day-9](2024/Go/Day9)|[Day-9](2024/Python/Day9)|
-|[Day-10](2024/Go/Day10)|[Day-10](2024/Python/Day10)|
-|[Day-11](2024/Go/Day11)|[Day-11](2024/Python/Day11)|
-|[Day-12](2024/Go/Day12)|[Day-12](2024/Python/Day12)|
-|[Day-13](2024/Go/Day13)|[Day-13](2024/Python/Day13)|
-|[Day-14](2024/Go/Day14)|[Day-14](2024/Python/Day14)|
-|[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|
-|[Day-16](2024/Go/Day16)|[Day-16](2024/Python/Day16)|
-|[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
-|[Day-18](2024/Go/Day18)|[Day-18](2024/Python/Day18)|
-|[Day-19](2024/Go/Day19)|[Day-19](2024/Python/Day19)|
-|[Day-20](2024/Go/Day20)|[Day-20](2024/Python/Day20)|
+|**Go**|**Python**|**Go**|**Python**|
+|------|----------|------|----------|
+|[Day-1](2024/Go/Day1)|[Day-1](2024/Python/Day1)|[Day-11](2024/Go/Day11)|[Day-11](2024/Python/Day11)|
+|[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|[Day-12](2024/Go/Day12)|[Day-12](2024/Python/Day12)|
+|[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|[Day-13](2024/Go/Day13)|[Day-13](2024/Python/Day13)|
+|[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|[Day-14](2024/Go/Day14)|[Day-14](2024/Python/Day14)|
+|[Day-5](2024/Go/Day5)|[Day-5](2024/Python/Day5)|[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|
+|[Day-6](2024/Go/Day6)|[Day-6](2024/Python/Day6)|[Day-16](2024/Go/Day16)|[Day-16](2024/Python/Day16)|
+|[Day-7](2024/Go/Day7)|[Day-7](2024/Python/Day7)|[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
+|[Day-8](2024/Go/Day8)|[Day-8](2024/Python/Day8)|[Day-18](2024/Go/Day18)|[Day-18](2024/Python/Day18)|
+|[Day-9](2024/Go/Day9)|[Day-9](2024/Python/Day9)|[Day-19](2024/Go/Day19)|[Day-19](2024/Python/Day19)|
+|[Day-10](2024/Go/Day10)|[Day-10](2024/Python/Day10)|[Day-20](2024/Go/Day20)|[Day-20](2024/Python/Day20)|
 
 ---
 If you are wondering by some part of the code is commented. Because i wanna write  pure code for every part even if it means to write some duplicate functions in both part specifically in golang and i don't wanna write util functionality which contain some parts of the code to prevent duplication. i don't want to change the names either so deal with it
