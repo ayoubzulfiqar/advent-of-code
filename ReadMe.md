@@ -10,7 +10,7 @@ Implemented in Go and Python (Rust - coming soon)
 |[Day-2](2024/Go/Day2)|[Day-2](2024/Python/Day2)|[Day-12](2024/Go/Day12)|[Day-12](2024/Python/Day12)|[Day-22](2024/Go/Day22)|[Day-22](2024/Python/Day22)|
 |[Day-3](2024/Go/Day3)|[Day-3](2024/Python/Day3)|[Day-13](2024/Go/Day13)|[Day-13](2024/Python/Day13)|[Day-23](2024/Go/Day23)|[Day-23](2024/Python/Day23)|
 |[Day-4](2024/Go/Day4)|[Day-4](2024/Python/Day4)|[Day-14](2024/Go/Day14)|[Day-14](2024/Python/Day14)|[Day-24](2024/Go/Day24)|[Day-24](2024/Python/Day24)|
-|[Day-5](2024/Go/Day5)|[Day-5](2024/Python/Day5)|[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|
+|[Day-5](2024/Go/Day5)|[Day-5](2024/Python/Day5)|[Day-15](2024/Go/Day15)|[Day-15](2024/Python/Day15)|[Day-25](2024/Go/Day25)|[Day-25](2024/Python/Day25)|
 |[Day-6](2024/Go/Day6)|[Day-6](2024/Python/Day6)|[Day-16](2024/Go/Day16)|[Day-16](2024/Python/Day16)|
 |[Day-7](2024/Go/Day7)|[Day-7](2024/Python/Day7)|[Day-17](2024/Go/Day17)|[Day-17](2024/Python/Day17)|
 |[Day-8](2024/Go/Day8)|[Day-8](2024/Python/Day8)|[Day-18](2024/Go/Day18)|[Day-18](2024/Python/Day18)|
