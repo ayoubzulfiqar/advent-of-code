@@ -2,7 +2,7 @@
 
 ## Adevnt of Code 2025
 
-Implementing in Go & Pyhton & Dart
+Implementing in Go & Pyhton & Dart [ZIG Probably]
 
 |**Go**|**Python**|**Dart**|
 |------|--------|--------------|
