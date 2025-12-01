@@ -34,10 +34,6 @@ Implementing in Go & Pyhton & Typescript(Visulization & Implementation)
 
 ---
 
-### **The Hour is Upon US**
-
----
-
 ## Advent of Code 2024
 
 Implemented in Go and Python
