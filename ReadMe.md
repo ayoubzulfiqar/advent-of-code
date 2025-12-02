@@ -1,4 +1,4 @@
-# Advent of Code: 2023 - 2024
+# **Advent of Code**
 
 ## Adevnt of Code 2025
 
