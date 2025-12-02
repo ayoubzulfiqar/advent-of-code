@@ -10,7 +10,6 @@ class MultiRepeatRange:
 
 
 def parse_multi_repeat_ranges(input_data: str) -> List[MultiRepeatRange]:
-    """Parse input string into list of multi-repeat ranges."""
     range_collection = []
     pair_strings = input_data.strip().split(",")
 
@@ -32,19 +31,16 @@ def parse_multi_repeat_ranges(input_data: str) -> List[MultiRepeatRange]:
 
 
 def digit_count(value: int) -> int:
-    """Count the number of digits in a number."""
     if value == 0:
         return 1
     return int(math.log10(value)) + 1
 
 
 def is_evenly_divisible(dividend: int, divisor: int) -> bool:
-    """Check if dividend is evenly divisible by divisor."""
     return dividend % divisor == 0
 
 
 def discover_multi_repeating_ids(min_id: int, max_id: int) -> Set[int]:
-    """Discover IDs that repeat segments multiple times within given bounds."""
     found_ids = set()
 
     min_digits = digit_count(min_id)
@@ -91,7 +87,6 @@ def discover_multi_repeating_ids(min_id: int, max_id: int) -> Set[int]:
 
 
 def compute_multi_repeat_id_sum(ranges: List[MultiRepeatRange]) -> int:
-    """Compute sum of all multi-repeat IDs across all ranges."""
     cumulative_sum = 0
 
     for current_range in ranges:
@@ -105,7 +100,6 @@ def compute_multi_repeat_id_sum(ranges: List[MultiRepeatRange]) -> int:
 
 
 def solve_part2() -> None:
-    """Main function to solve Part 2."""
     try:
         with open("input.txt", "r") as file:
             file_data = file.read()

@@ -10,7 +10,6 @@ class IDRange:
 
 
 def parse_ranges(input_str: str) -> List[IDRange]:
-    """Parse input string into list of ID ranges."""
     ranges = []
     line_pairs = input_str.strip().split(",")
 
@@ -30,19 +29,16 @@ def parse_ranges(input_str: str) -> List[IDRange]:
 
 
 def count_digits(num: int) -> int:
-    """Count the number of digits in a number."""
     if num == 0:
         return 1
     return int(math.log10(num)) + 1
 
 
 def is_divisible_by(dividend: int, divisor: int) -> bool:
-    """Check if dividend is divisible by divisor."""
     return dividend % divisor == 0
 
 
 def find_invalid_ids(start_id: int, end_id: int) -> List[int]:
-    """Find invalid IDs in the given range (numbers that repeat their first half)."""
     invalid_ids = []
 
     start_digits = count_digits(start_id)
@@ -57,7 +53,6 @@ def find_invalid_ids(start_id: int, end_id: int) -> List[int]:
     max_half_digits = end_digits // 2
 
     for half_length in range(min_half_digits, max_half_digits + 1):
-        # Calculate bounds for the first half
         first_half_lower_bound = 10 ** (half_length - 1)
         if first_half_lower_bound < start_id // (10**half_length):
             first_half_lower_bound = start_id // (10**half_length)
@@ -80,7 +75,6 @@ def find_invalid_ids(start_id: int, end_id: int) -> List[int]:
 
 
 def calculate_invalid_id_sum(id_ranges: List[IDRange]) -> int:
-    """Calculate sum of all invalid IDs across all ranges."""
     total_sum = 0
 
     for id_range in id_ranges:
@@ -92,7 +86,6 @@ def calculate_invalid_id_sum(id_ranges: List[IDRange]) -> int:
 
 
 def solve_part1() -> None:
-    """Main function to solve Part 1."""
     try:
         with open("input.txt", "r") as file:
             data = file.read()
