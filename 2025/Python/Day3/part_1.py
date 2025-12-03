@@ -15,7 +15,6 @@ def output_joltage():
                     else:
                         break
 
-                # Initialize arrays
                 T = [0] * length
                 R = [0] * length
 
