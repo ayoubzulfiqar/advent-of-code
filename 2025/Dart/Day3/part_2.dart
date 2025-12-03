@@ -8,7 +8,6 @@ int newTotalOutputJoltage() {
     int total = 0;
 
     for (final line in lines) {
-      // Find length of numeric part (until non-digit)
       int length = 0;
       for (
         int i = 0;
@@ -18,16 +17,13 @@ int newTotalOutputJoltage() {
         length++;
       }
 
-      // Initialize lists
       final T = List<int>.filled(length, 0);
       final R = List<int>.filled(length, 0);
 
-      // Fill T with digits
       for (int i = 0; i < length; i++) {
         T[i] = line.codeUnitAt(i) - 48; // '0' is 48 in ASCII
       }
 
-      // Main logic with summands = 12
       const summands = 12;
       for (int it = 0; it < summands; it++) {
         int m = 0;
@@ -40,7 +36,6 @@ int newTotalOutputJoltage() {
         }
       }
 
-      // Final pass
       int m = 0;
       for (int i = 0; i < length; i++) {
         if (R[i] > m) {
