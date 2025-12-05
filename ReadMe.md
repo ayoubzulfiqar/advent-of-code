@@ -12,7 +12,7 @@ Implementing in Go & Pyhton & Dart [ZIG Probably]
 |[Day-2](2025/Go/Day2)|[Day-2](2025/Python/Day2)|[Day-2](2025/Dart/Day2)|
 |[Day-3](2025/Go/Day3)|[Day-3](2025/Python/Day3)|[Day-3](2025/Dart/Day3)|
 |[Day-4](2025/Go/Day4)|[Day-4](2025/Python/Day4)|[Day-4](2025/Dart/Day4)|
-<!-- |[Day-5](2025/Go/Day5)|[Day-5](2025/Python/Day5)|[Day-5](2025/Dart/Day5)| -->
+|[Day-5](2025/Go/Day5)|[Day-5](2025/Python/Day5)|[Day-5](2025/Dart/Day5)|
 <!-- |[Day-6](2025/Go/Day6)|[Day-6](2025/Python/Day6)|[Day-6](2025/Dart/Day6)| -->
 <!-- |[Day-7](2025/Go/Day7)|[Day-7](2025/Python/Day7)|[Day-7](2025/Dart/Day7)| -->
 <!-- |[Day-8](2025/Go/Day8)|[Day-8](2025/Python/Day8)|[Day-8](2025/Dart/Day8)| -->
