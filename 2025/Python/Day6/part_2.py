@@ -1,6 +1,6 @@
 def individual_grand_answers_totals():
     try:
-        with open("input.txt", "r") as file:
+        with open("input.txt", "r", encoding="utf-8") as file:
             content_string = file.read()
     except FileNotFoundError:
         print("Error: input.txt file not found")
