@@ -1,13 +1,13 @@
 def beamSplitTime():
     try:
-        with open("input.txt", "r") as f:
+        with open("input.txt", "r", encoding="utf-8") as f:
             lines = [line.rstrip("\n") for line in f]
-    except FileNotFoundError:
-        print("Error reading input file")
+    except FileNotFoundError as e:
+        print(f"Error reading input file: {e}")
         return 0
 
     if not lines:
-        print("Part 1: 0")
+        print("Count: 0")
         return 0
 
     first_line = lines[0]
@@ -18,7 +18,7 @@ def beamSplitTime():
             break
 
     if start == -1:
-        print("Part 1: 0")
+        print("Count: 0")
         return 0
 
     beams = {start: True}
@@ -58,7 +58,7 @@ def beamSplitTime():
         count += split_count
         beams = final_beams
 
-    print(f"Part 1: {count}")
+    print(f"Counts: {count}")
     return count
 
 

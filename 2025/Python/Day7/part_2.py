@@ -1,6 +1,6 @@
 def singleTachyonParticleTimelines():
     try:
-        with open("input.txt", "r") as f:
+        with open("input.txt", "r", encoding="utf-8") as f:
             lines = [line.rstrip("\n") for line in f]
     except FileNotFoundError:
         print("Error reading input file")
@@ -27,7 +27,6 @@ def singleTachyonParticleTimelines():
         if not remaining_lines:
             return 1
 
-        # Create a tuple key from the remaining lines and position
         key = (tuple(remaining_lines), pos)
 
         if key in cache:
@@ -36,14 +35,11 @@ def singleTachyonParticleTimelines():
         current_line = remaining_lines[0]
         result = 0
 
-        # Check if position is within bounds and has '^'
         if 0 <= pos < len(current_line) and current_line[pos] == "^":
-            # Split to left and right
             left = timelines(pos - 1, remaining_lines[1:])
             right = timelines(pos + 1, remaining_lines[1:])
             result = left + right
         else:
-            # Continue straight down
             result = timelines(pos, remaining_lines[1:])
 
         cache[key] = result
