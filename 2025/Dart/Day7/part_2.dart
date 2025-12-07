@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 int singleTachyonParticleTimelines() {
   try {
     final file = File('input.txt');
-    final lines = file.readAsLinesSync();
+    final lines = file.readAsLinesSync(encoding: utf8);
 
     if (lines.isEmpty) {
       print('0');
@@ -33,7 +34,6 @@ int singleTachyonParticleTimelines() {
 
       final key = remainingLines.join('');
 
-      // Check cache
       if (cache.containsKey(key)) {
         final subCache = cache[key]!;
         if (subCache.containsKey(pos)) {
@@ -44,9 +44,7 @@ int singleTachyonParticleTimelines() {
       final currentLine = remainingLines[0];
       int result;
 
-      // Check if position is within bounds and has '^'
       if (pos >= 0 && pos < currentLine.length && currentLine[pos] == '^') {
-        // Split to left and right
         final left = timelines(pos - 1, remainingLines.sublist(1));
         final right = timelines(pos + 1, remainingLines.sublist(1));
         result = left + right;
@@ -55,7 +53,6 @@ int singleTachyonParticleTimelines() {
         result = timelines(pos, remainingLines.sublist(1));
       }
 
-      // Store in cache
       if (!cache.containsKey(key)) {
         cache[key] = <int, int>{};
       }

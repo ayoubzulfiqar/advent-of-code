@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 int beamSplitTime() {
   try {
     final file = File('input.txt');
-    final lines = file.readAsLinesSync();
+    final lines = file.readAsLinesSync(encoding: utf8);
 
     if (lines.isEmpty) {
       print('Part 1: 0');
@@ -24,7 +25,7 @@ int beamSplitTime() {
       return 0;
     }
 
-    var beams = <int, bool>{start: true};
+    Map<int, bool> beams = <int, bool>{start: true};
     int count = 0;
 
     for (final line in lines.sublist(1)) {
