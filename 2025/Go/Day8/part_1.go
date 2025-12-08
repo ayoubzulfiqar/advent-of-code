@@ -61,7 +61,6 @@ func dist(a, b Coord) int {
 }
 
 func MultiplicationThreeLargestCircuits() {
-	// Read the input file
 	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
@@ -109,37 +108,31 @@ func MultiplicationThreeLargestCircuits() {
 		}
 	}
 
-	// Sort edges by distance
 	sort.Slice(edges, func(i, j int) bool {
 		return edges[i].dist < edges[j].dist
 	})
 
-	// Initialize DSU and process first 1000 edges
 	dsu := NewDSU(n)
 	limit := min(1000, len(edges))
 	for i := 0; i < limit; i++ {
 		dsu.Union(edges[i].a, edges[i].b)
 	}
 
-	// Count circuits
 	circuitMap := make(map[int]int)
 	for i := 0; i < n; i++ {
 		root := dsu.Find(i)
 		circuitMap[root]++
 	}
 
-	// Collect circuit sizes
 	var circuits []int
 	for _, size := range circuitMap {
 		circuits = append(circuits, size)
 	}
 
-	// Sort in descending order
 	sort.Slice(circuits, func(i, j int) bool {
 		return circuits[i] > circuits[j]
 	})
 
-	// Get product of top 3 circuits
 	topCount := min(3, len(circuits))
 	product := 1
 	for i := 0; i < topCount; i++ {
