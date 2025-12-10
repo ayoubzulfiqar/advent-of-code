@@ -123,7 +123,6 @@ def gaussian_elimination(matrix: List[List[int]]) -> Tuple[List[int], List[List[
 
 
 def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
-    """Exact translation of Go solveSystem function"""
     n = len(buttons)
     m = len(joltages)
 
