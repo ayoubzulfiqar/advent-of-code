@@ -12,7 +12,6 @@ class WorkResult {
   WorkResult(this.iterations);
 }
 
-// Convert list of indices to bitmask
 int toBitmask(List<int> indices) {
   int mask = 0;
   for (final v in indices) {
@@ -21,7 +20,6 @@ int toBitmask(List<int> indices) {
   return mask;
 }
 
-// Parse a single line (to be run in isolate)
 WorkResult processLine(String line) {
   line = line.trim();
   if (line.isEmpty) return WorkResult(0);
@@ -30,10 +28,8 @@ WorkResult processLine(String line) {
   if (parts.length < 2) return WorkResult(0);
 
   final lightsStr = parts[0];
-  // Extract wiring: skip first and last (assuming last is '()' or similar)
   final wiringParts = parts.sublist(1, parts.length - 1);
 
-  // Parse lights: e.g., "[###..]" → indices of '#'
   final lightsClean = lightsStr.replaceAll(RegExp(r'[\[\]]'), '');
   final startIndices = <int>[];
   for (int i = 0; i < lightsClean.length; i++) {
@@ -42,7 +38,6 @@ WorkResult processLine(String line) {
     }
   }
 
-  // Parse wiring buttons
   final buttonMasks = <int>[];
   for (final wire in wiringParts) {
     final cleanWire = wire.replaceAll(RegExp(r'[()]'), '').trim();
@@ -57,7 +52,6 @@ WorkResult processLine(String line) {
         final num = int.parse(trimmed);
         buttonIndices.add(num);
       } catch (e) {
-        // Skip invalid numbers
         continue;
       }
     }
@@ -71,7 +65,6 @@ WorkResult processLine(String line) {
 
   if (startMask == endMask) return WorkResult(0);
 
-  // BFS using Set<int> for visited states
   final current = <int>{startMask};
   int iterations = 0;
   const maxIterations = 100000;
@@ -95,7 +88,6 @@ WorkResult processLine(String line) {
       ..addAll(next);
   }
 
-  // Safety break
   return WorkResult(maxIterations);
 }
 
@@ -116,12 +108,10 @@ void main() async {
     return;
   }
 
-  // Isolates parallel processing
   final total = await _processLinesInParallel(lines);
   print('Total: $total');
 }
 
-// Split lines robustly (handles \r\n, \n, etc.)
 class LineSplitter {
   static List<String> split(String text) {
     return text.split(RegExp(r'\r?\n'));
@@ -159,7 +149,6 @@ Future<int> _processLinesInParallel(List<String> lines) async {
   return results.reduce((a, b) => a + b);
 }
 
-// Isolate entry
 void _isolateEntry(List<dynamic> args) {
   final List<String> lines = List<String>.from(args[0]);
   final SendPort sendPort = args[1] as SendPort;

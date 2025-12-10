@@ -24,7 +24,6 @@ List<Puzzle> parseInput(String content) {
         .toList();
     if (parts.length < 2) continue;
 
-    // Parse target: [###..]
     final targetRaw = parts[0];
     if (targetRaw.length < 2 ||
         !targetRaw.startsWith('[') ||
@@ -32,7 +31,6 @@ List<Puzzle> parseInput(String content) {
       continue;
     final target = targetRaw.substring(1, targetRaw.length - 1);
 
-    // Parse joltage: {1,2,3}
     final joltageRaw = parts.last;
     if (joltageRaw.length < 2 ||
         !joltageRaw.startsWith('{') ||
@@ -46,13 +44,10 @@ List<Puzzle> parseInput(String content) {
         if (trimmed.isEmpty) continue;
         try {
           joltage.add(int.parse(trimmed));
-        } catch (_) {
-          // skip invalid
-        }
+        } catch (_) {}
       }
     }
 
-    // Parse buttons: (0,2) (1,3)
     final buttons = <List<int>>[];
     for (int i = 1; i < parts.length - 1; i++) {
       final btn = parts[i];
@@ -84,17 +79,14 @@ class LineSplitter {
   }
 }
 
-// --- Gaussian Elimination (over integers) ---
-
 Tuple2<List<int>, List<List<int>>> gaussianElimination(
   List<List<int>> originalMatrix,
 ) {
   if (originalMatrix.isEmpty) return Tuple2(<int>[], <List<int>>[]);
 
   final m = originalMatrix.length;
-  final n = originalMatrix[0].length - 1; // last column is constant
+  final n = originalMatrix[0].length - 1;
 
-  // Deep copy
   final mat = List<List<int>>.generate(
     m,
     (i) => List<int>.from(originalMatrix[i]),
@@ -104,7 +96,6 @@ Tuple2<List<int>, List<List<int>>> gaussianElimination(
   var currentRow = 0;
 
   for (var col = 0; col < n && currentRow < m; col++) {
-    // Find pivot
     int? pivotRow;
     for (var row = currentRow; row < m; row++) {
       if (mat[row][col] != 0) {
@@ -115,19 +106,16 @@ Tuple2<List<int>, List<List<int>>> gaussianElimination(
 
     if (pivotRow == null) continue;
 
-    // Swap
     final temp = mat[currentRow];
     mat[currentRow] = mat[pivotRow];
     mat[pivotRow] = temp;
     pivotCols.add(col);
 
-    // Eliminate below
     for (var row = currentRow + 1; row < m; row++) {
       if (mat[row][col] != 0) {
         final factor = mat[row][col];
         final pivotVal = mat[currentRow][col];
         for (var j = col; j <= n; j++) {
-          // Cross-multiply to avoid fractions
           mat[row][j] = mat[row][j] * pivotVal - mat[currentRow][j] * factor;
         }
       }
@@ -140,19 +128,17 @@ Tuple2<List<int>, List<List<int>>> gaussianElimination(
 }
 
 List<int> solveSystem(List<List<int>> buttons, List<int> joltages) {
-  final n = buttons.length; // number of buttons (variables)
-  final m = joltages.length; // number of equations (lights)
+  final n = buttons.length;
+  final m = joltages.length;
 
-  // Build augmented matrix: m rows, n+1 cols
   final matrix = List.generate(m, (i) {
     final row = List.filled(n + 1, 0);
     for (int j = 0; j < n; j++) {
-      // Does button j affect light i?
       if (buttons[j].contains(i)) {
         row[j] = 1;
       }
     }
-    row[n] = joltages[i]; // constant term
+    row[n] = joltages[i];
     return row;
   });
 
@@ -171,31 +157,28 @@ List<int> solveSystem(List<List<int>> buttons, List<int> joltages) {
   ).where((i) => !pivotSet.contains(i)).toList();
 
   List<int> bestSolution = List.filled(n, 0);
-  int bestSum = 1000000000; // or int.MaxValue equivalent
+  int bestSum = 1000000000;
 
   void trySolution(List<int> freeValues) {
     final solution = List<int>.filled(n, 0);
 
-    // Assign free variables
     for (int i = 0; i < freeVars.length; i++) {
       if (i < freeValues.length) {
         solution[freeVars[i]] = freeValues[i];
       }
     }
 
-    // Back-substitute pivot variables (from bottom up)
     for (int idx = pivotCols.length - 1; idx >= 0; idx--) {
       final row = idx;
       final col = pivotCols[idx];
-      var total = reducedMatrix[row][n]; // constant
+      var total = reducedMatrix[row][n];
 
       for (int j = col + 1; j < n; j++) {
         total -= reducedMatrix[row][j] * solution[j];
       }
 
       final coeff = reducedMatrix[row][col];
-      if (coeff == 0) return; // inconsistent
-
+      if (coeff == 0) return;
       if (total % coeff != 0) return;
       final val = total ~/ coeff;
       if (val < 0) return;
@@ -220,7 +203,6 @@ List<int> solveSystem(List<List<int>> buttons, List<int> joltages) {
     }
   }
 
-  // Try values for free variables
   if (freeVars.isEmpty) {
     trySolution([]);
   } else if (freeVars.length == 1) {
@@ -260,14 +242,11 @@ List<int> solveSystem(List<List<int>> buttons, List<int> joltages) {
       }
     }
   } else {
-    // Fallback: all zeros
     trySolution(List.filled(freeVars.length, 0));
   }
 
   return bestSolution;
 }
-
-// --- Parallel Isolates ---
 
 class WorkItem {
   final Puzzle puzzle;
@@ -338,8 +317,6 @@ Future<int> solvePuzzlesInParallel(List<Puzzle> puzzles) async {
   final results = await Future.wait(futures);
   return results.reduce((a, b) => a + b);
 }
-
-// --- Main ---
 
 void main() async {
   final file = File('input.txt');
