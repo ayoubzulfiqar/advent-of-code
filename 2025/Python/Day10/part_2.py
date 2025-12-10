@@ -24,14 +24,12 @@ def parse_input(filename: str) -> List[Puzzle]:
                 if len(parts) < 2:
                     continue
 
-                # Parse target configuration
                 target = ""
                 if len(parts[0]) >= 2 and parts[0][0] == "[" and parts[0][-1] == "]":
                     target = parts[0][1:-1]
                 else:
                     continue
 
-                # Parse joltage values
                 joltage_str = parts[-1]
                 joltage = []
                 if (
@@ -51,7 +49,6 @@ def parse_input(filename: str) -> List[Puzzle]:
                 else:
                     continue
 
-                # Parse buttons
                 buttons = []
                 for i in range(1, len(parts) - 1):
                     btn = parts[i]
@@ -87,14 +84,12 @@ def gaussian_elimination(matrix: List[List[int]]) -> Tuple[List[int], List[List[
     pivot_cols = []
     current_row = 0
 
-    # Make a deep copy
     mat = [row[:] for row in matrix]
 
     for col in range(n):
         if current_row >= m:
             break
 
-        # Find pivot row
         pivot_row = -1
         for row in range(current_row, m):
             if mat[row][col] != 0:
@@ -104,11 +99,9 @@ def gaussian_elimination(matrix: List[List[int]]) -> Tuple[List[int], List[List[
         if pivot_row == -1:
             continue
 
-        # Swap rows
         mat[current_row], mat[pivot_row] = mat[pivot_row], mat[current_row]
         pivot_cols.append(col)
 
-        # Eliminate below
         for row in range(current_row + 1, m):
             if mat[row][col] != 0:
                 factor = mat[row][col]
@@ -126,11 +119,9 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
     n = len(buttons)
     m = len(joltages)
 
-    # Create augmented matrix
     matrix = [[0] * (n + 1) for _ in range(m)]
     for i in range(m):
         for j in range(n):
-            # Check if button j affects position i
             affects = False
             for pos in buttons[j]:
                 if pos == i:
@@ -140,10 +131,8 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
                 matrix[i][j] = 1
         matrix[i][n] = joltages[i]
 
-    # Perform Gaussian elimination
     pivot_cols, reduced_matrix = gaussian_elimination(matrix)
 
-    # Identify free variables
     pivot_set = set(pivot_cols)
     free_vars = [i for i in range(n) if i not in pivot_set]
 
@@ -157,7 +146,6 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
         for i, var_idx in enumerate(free_vars):
             solution[var_idx] = free_values[i] if i < len(free_values) else 0
 
-        # Back-substitute
         for idx in range(len(pivot_cols) - 1, -1, -1):
             row = idx
             col = pivot_cols[idx]
@@ -178,7 +166,6 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
 
             solution[col] = val
 
-        # Verify solution
         for i in range(m):
             total = 0
             for j in range(n):
@@ -190,14 +177,12 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
             if total != joltages[i]:
                 return
 
-        # Calculate total presses
         total_presses = sum(solution)
 
         if best_sum == -1 or total_presses < best_sum:
             best_solution = solution[:]
             best_sum = total_presses
 
-    # EXACT search bounds from Go code
     if len(free_vars) == 0:
         try_solution([])
     elif len(free_vars) == 1:
@@ -238,7 +223,6 @@ def solve_system_exact(buttons: List[List[int]], joltages: List[int]) -> int:
                             continue
                         try_solution([v1, v2, v3, v4])
     else:
-        # Fallback
         try_solution([0] * len(free_vars))
 
     return 0 if best_sum == -1 else best_sum
@@ -252,7 +236,6 @@ def configure_jolt_level(puzzles: List[Puzzle]) -> int:
     if not puzzles:
         return 0
 
-    # Use all CPU cores
     num_workers = min(mp.cpu_count(), len(puzzles))
 
     with mp.Pool(processes=num_workers) as pool:
