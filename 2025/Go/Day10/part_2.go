@@ -36,7 +36,6 @@ func parseInput(filename string) ([]Puzzle, error) {
 			continue
 		}
 
-		// Parse target configuration
 		target := ""
 		if len(parts[0]) >= 2 && parts[0][0] == '[' && parts[0][len(parts[0])-1] == ']' {
 			target = parts[0][1 : len(parts[0])-1]
@@ -44,7 +43,6 @@ func parseInput(filename string) ([]Puzzle, error) {
 			continue
 		}
 
-		// Parse joltage values
 		joltageStr := parts[len(parts)-1]
 		var joltage []int
 		if len(joltageStr) >= 2 && joltageStr[0] == '{' && joltageStr[len(joltageStr)-1] == '}' {
@@ -58,7 +56,6 @@ func parseInput(filename string) ([]Puzzle, error) {
 			continue
 		}
 
-		// Parse buttons
 		var buttons [][]int
 		for i := 1; i < len(parts)-1; i++ {
 			btn := parts[i]
@@ -95,12 +92,11 @@ func gaussianElimination(matrix [][]int) ([]int, [][]int) {
 	if m == 0 {
 		return nil, nil
 	}
-	n := len(matrix[0]) - 1 // Last column is the constant term
+	n := len(matrix[0]) - 1 
 
 	pivotCols := []int{}
 	currentRow := 0
 
-	// Make a deep copy of the matrix to avoid modifying the original
 	mat := make([][]int, m)
 	for i := range matrix {
 		mat[i] = make([]int, n+1)
@@ -108,7 +104,6 @@ func gaussianElimination(matrix [][]int) ([]int, [][]int) {
 	}
 
 	for col := 0; col < n && currentRow < m; col++ {
-		// Find pivot row
 		pivotRow := -1
 		for row := currentRow; row < m; row++ {
 			if mat[row][col] != 0 {
@@ -121,11 +116,9 @@ func gaussianElimination(matrix [][]int) ([]int, [][]int) {
 			continue
 		}
 
-		// Swap pivot row with current row
 		mat[currentRow], mat[pivotRow] = mat[pivotRow], mat[currentRow]
 		pivotCols = append(pivotCols, col)
 
-		// Eliminate below
 		for row := currentRow + 1; row < m; row++ {
 			if mat[row][col] != 0 {
 				factor := mat[row][col]
@@ -147,12 +140,10 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 	n := len(buttons)
 	m := len(joltages)
 
-	// Create augmented matrix
 	matrix := make([][]int, m)
 	for i := range matrix {
 		matrix[i] = make([]int, n+1)
 		for j := 0; j < n; j++ {
-			// Check if button j affects position i
 			affects := false
 			for _, pos := range buttons[j] {
 				if pos == i {
@@ -167,13 +158,11 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 		matrix[i][n] = joltages[i]
 	}
 
-	// Perform Gaussian elimination
 	pivotCols, reducedMatrix := gaussianElimination(matrix)
 	if reducedMatrix == nil {
 		return nil
 	}
 
-	// Identify free variables
 	pivotSet := make(map[int]bool)
 	for _, col := range pivotCols {
 		pivotSet[col] = true
@@ -186,13 +175,11 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 		}
 	}
 
-	// Find the best solution with minimum sum
 	bestSolution := make([]int, n)
 	bestSum := -1
 
 	var trySolution func(freeValues []int)
 	trySolution = func(freeValues []int) {
-		// Initialize solution with free variable values
 		solution := make([]int, n)
 		for i, varIdx := range freeVars {
 			if i < len(freeValues) {
@@ -200,20 +187,17 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 			}
 		}
 
-		// Back-substitute to find pivot variables
 		for i := len(pivotCols) - 1; i >= 0; i-- {
 			row := i
 			col := pivotCols[i]
 			total := reducedMatrix[row][n] // Constant term
 
-			// Subtract contributions from already known variables
 			for j := col + 1; j < n; j++ {
 				total -= reducedMatrix[row][j] * solution[j]
 			}
 
-			// Check if division is possible and results in non-negative integer
 			if reducedMatrix[row][col] == 0 {
-				return // No solution for this configuration
+				return 
 			}
 
 			if total%reducedMatrix[row][col] != 0 {
@@ -228,12 +212,10 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 			solution[col] = val
 		}
 
-		// Verify the solution satisfies all equations
 		for i := 0; i < m; i++ {
 			total := 0
 			for j := 0; j < n; j++ {
 				if solution[j] > 0 {
-					// Check if button j affects position i
 					for _, pos := range buttons[j] {
 						if pos == i {
 							total += solution[j]
@@ -247,20 +229,17 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 			}
 		}
 
-		// Calculate total presses
 		totalPresses := 0
 		for _, val := range solution {
 			totalPresses += val
 		}
 
-		// Update best solution if this one is better
 		if bestSum == -1 || totalPresses < bestSum {
 			copy(bestSolution, solution)
 			bestSum = totalPresses
 		}
 	}
 
-	// Try different values for free variables
 	if len(freeVars) == 0 {
 		trySolution([]int{})
 	} else if len(freeVars) == 1 {
@@ -320,12 +299,10 @@ func solveSystem(buttons [][]int, joltages []int) []int {
 			}
 		}
 	} else {
-		// Fallback for more free variables
 		trySolution(make([]int, len(freeVars)))
 	}
 
 	if bestSum == -1 {
-		// No solution found, return zeros as fallback
 		return make([]int, n)
 	}
 

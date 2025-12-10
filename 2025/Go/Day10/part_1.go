@@ -40,7 +40,6 @@ func ConfigureTheIndicatorLights() {
 		lights := parts[0]
 		wiring := parts[1 : len(parts)-1]
 
-		// Parse lights (remove brackets and convert to bool array)
 		lights = strings.Trim(lights, "[]")
 		start := []int{}
 		for i, ch := range lights {
@@ -49,7 +48,6 @@ func ConfigureTheIndicatorLights() {
 			}
 		}
 
-		// Parse buttons
 		buttons := [][]int{}
 		for _, wire := range wiring {
 			wire = strings.Trim(wire, "()")
@@ -69,7 +67,6 @@ func ConfigureTheIndicatorLights() {
 			buttons = append(buttons, button)
 		}
 
-		// Convert to bitmasks
 		startMask := toBitmask(start)
 		buttonMasks := []int{}
 		for _, button := range buttons {
@@ -79,7 +76,6 @@ func ConfigureTheIndicatorLights() {
 
 		// fmt.Printf("Start: %d, Buttons: %v, End: %d\n", startMask, buttonMasks, endMask)
 
-		// BFS through states
 		current := map[int]bool{startMask: true}
 		iterations := 0
 		found := false
@@ -98,7 +94,6 @@ func ConfigureTheIndicatorLights() {
 			current = nextSet
 			iterations++
 
-			// Safety check to prevent infinite loop
 			if iterations > 100000 {
 				fmt.Println("Warning: Too many iterations, breaking")
 				break
@@ -113,6 +108,7 @@ func ConfigureTheIndicatorLights() {
 }
 
 /*
+
 package main
 
 import (
@@ -140,13 +136,13 @@ func main() {
 			continue
 		}
 
-		// Split the line into components
+	
 		parts := strings.Fields(line)
 		if len(parts) < 2 {
 			continue
 		}
 
-		// Extract lights configuration
+	
 		lightsPart := parts[0]
 		if len(lightsPart) < 2 || lightsPart[0] != '[' || lightsPart[len(lightsPart)-1] != ']' {
 			continue
@@ -154,10 +150,9 @@ func main() {
 		lightsStr := lightsPart[1 : len(lightsPart)-1]
 		n := len(lightsStr)
 
-		// Extract wiring patterns (buttons)
 		wiringParts := parts[1 : len(parts)-1]
 
-		// Convert lights to bitmask (1 = on, 0 = off)
+	
 		startState := 0
 		for i, char := range lightsStr {
 			if char == '#' {
@@ -165,12 +160,12 @@ func main() {
 			}
 		}
 
-		// If all lights are already off, skip BFS
+	
 		if startState == 0 {
 			continue
 		}
 
-		// Parse wiring patterns into bitmasks
+		
 		buttons := []int{}
 		for _, wp := range wiringParts {
 			if len(wp) < 2 || wp[0] != '(' || wp[len(wp)-1] != ')' {
@@ -192,19 +187,19 @@ func main() {
 			buttons = append(buttons, mask)
 		}
 
-		// BFS setup
+		
 		visited := make(map[int]bool)
 		queue := []int{startState}
 		visited[startState] = true
 		steps := 0
 		found := false
 
-		// Target state: all lights off (bitmask 0)
+		
 		for !found && len(queue) > 0 {
 			nextQueue := []int{}
 
 			for _, state := range queue {
-				// Try pressing each button
+				
 				for _, btn := range buttons {
 					newState := state ^ btn
 
