@@ -3,7 +3,7 @@ from collections import deque
 
 def main():
     try:
-        with open("input.txt", "r") as file:
+        with open("input.txt", "r", encoding="utf-8") as file:
             total_steps = 0
 
             for line in file:
@@ -11,12 +11,10 @@ def main():
                 if not line:
                     continue
 
-                # Split the line into components
                 parts = line.split()
                 if len(parts) < 2:
                     continue
 
-                # Extract lights configuration
                 lights_part = parts[0]
                 if (
                     len(lights_part) < 2
@@ -28,20 +26,16 @@ def main():
                 lights_str = lights_part[1:-1]
                 n = len(lights_str)
 
-                # Extract wiring patterns (buttons)
                 wiring_parts = parts[1:-1]
 
-                # Convert lights to bitmask (1 = on, 0 = off)
                 start_state = 0
                 for i, char in enumerate(lights_str):
                     if char == "#":
                         start_state |= 1 << i
 
-                # If all lights are already off, skip BFS
                 if start_state == 0:
                     continue
 
-                # Parse wiring patterns into bitmasks
                 buttons = []
                 for wp in wiring_parts:
                     if len(wp) < 2 or wp[0] != "(" or wp[-1] != ")":
@@ -65,20 +59,17 @@ def main():
                                 pass
                     buttons.append(mask)
 
-                # BFS setup
                 visited = {start_state}
                 queue = deque([start_state])
                 steps = 0
                 found = False
 
-                # Target state: all lights off (bitmask 0)
                 while not found and queue:
                     level_size = len(queue)
 
                     for _ in range(level_size):
                         state = queue.popleft()
 
-                        # Try pressing each button
                         for btn in buttons:
                             new_state = state ^ btn
 
