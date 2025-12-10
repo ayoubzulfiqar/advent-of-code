@@ -111,3 +111,137 @@ func ConfigureTheIndicatorLights() {
 
 	fmt.Printf("Total: %d\n", ret)
 }
+
+/*
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func main() {
+	file, err := os.Open("input.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	totalSteps := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) == 0 {
+			continue
+		}
+
+		// Split the line into components
+		parts := strings.Fields(line)
+		if len(parts) < 2 {
+			continue
+		}
+
+		// Extract lights configuration
+		lightsPart := parts[0]
+		if len(lightsPart) < 2 || lightsPart[0] != '[' || lightsPart[len(lightsPart)-1] != ']' {
+			continue
+		}
+		lightsStr := lightsPart[1 : len(lightsPart)-1]
+		n := len(lightsStr)
+
+		// Extract wiring patterns (buttons)
+		wiringParts := parts[1 : len(parts)-1]
+
+		// Convert lights to bitmask (1 = on, 0 = off)
+		startState := 0
+		for i, char := range lightsStr {
+			if char == '#' {
+				startState |= (1 << uint(i))
+			}
+		}
+
+		// If all lights are already off, skip BFS
+		if startState == 0 {
+			continue
+		}
+
+		// Parse wiring patterns into bitmasks
+		buttons := []int{}
+		for _, wp := range wiringParts {
+			if len(wp) < 2 || wp[0] != '(' || wp[len(wp)-1] != ')' {
+				continue
+			}
+			inner := wp[1 : len(wp)-1]
+			if inner == "" {
+				buttons = append(buttons, 0)
+				continue
+			}
+
+			indices := strings.Split(inner, ",")
+			mask := 0
+			for _, idxStr := range indices {
+				if idx, err := strconv.Atoi(strings.TrimSpace(idxStr)); err == nil && idx >= 0 && idx < n {
+					mask |= (1 << uint(idx))
+				}
+			}
+			buttons = append(buttons, mask)
+		}
+
+		// BFS setup
+		visited := make(map[int]bool)
+		queue := []int{startState}
+		visited[startState] = true
+		steps := 0
+		found := false
+
+		// Target state: all lights off (bitmask 0)
+		for !found && len(queue) > 0 {
+			nextQueue := []int{}
+
+			for _, state := range queue {
+				// Try pressing each button
+				for _, btn := range buttons {
+					newState := state ^ btn
+
+					if newState == 0 {
+						steps++
+						found = true
+						break
+					}
+
+					if !visited[newState] {
+						visited[newState] = true
+						nextQueue = append(nextQueue, newState)
+					}
+				}
+				if found {
+					break
+				}
+			}
+
+			if found {
+				break
+			}
+
+			queue = nextQueue
+			steps++
+		}
+
+		totalSteps += steps
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+
+	fmt.Println(totalSteps)
+}
+
+
+*/
